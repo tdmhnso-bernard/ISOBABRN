@@ -6,8 +6,17 @@
     <title>Internal Quality Audit Checklist - Hospital ISO 9001:2015</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* FONT SETTINGS - Aptos Primary */
+        body { 
+            font-family: 'Aptos', 'Segoe UI', system-ui, -apple-system, sans-serif; 
+        }
+
         /* LANDSCAPE PRINT OPTIMIZATION */
-        @page { size: landscape; margin: 0.5cm; }
+        @page { 
+            size: landscape; 
+            margin: 0.8cm; 
+        }
+        
         @media print {
             .no-print { display: none !important; }
             body { background: white; padding: 0; margin: 0; }
@@ -20,7 +29,19 @@
             .requirement-text { background: transparent !important; border: none !important; padding: 0 !important; color: #333 !important; font-style: normal !important; }
             input[type="text"] { border: none !important; }
             .clause-group { background-color: #f1f5f9 !important; -webkit-print-color-adjust: exact; }
+            
+            /* Persistent Footnote on every page */
+            .print-footer {
+                display: block !important;
+                position: fixed;
+                bottom: -20px;
+                right: 0;
+                font-size: 8pt;
+                font-weight: bold;
+            }
         }
+        
+        .print-footer { display: none; }
         
         .audit-table th, .audit-table td { border: 1.2px solid #000; }
         input[type="text"], textarea { border: none; width: 100%; height: 100%; padding: 4px; background: transparent; font-family: inherit; }
@@ -86,7 +107,7 @@
         </div>
 
         <!-- Document Header Area -->
-        <div class="p-6">
+        <div class="p-6 relative">
             <h2 class="text-lg font-bold text-center underline mb-4 uppercase tracking-widest">INTERNAL QUALITY AUDIT CHECKLIST</h2>
 
             <!-- Legend Table -->
@@ -174,9 +195,15 @@
                 </div>
             </div>
             
-            <div class="mt-2 text-right text-[8px] font-bold">
+            <!-- Standard Footer Text (Screen Only) -->
+            <div class="mt-2 text-right text-[8px] font-bold no-print">
                 TDMH-QC-F-003-03-Φ
             </div>
+        </div>
+        
+        <!-- Persistent Print Footnote -->
+        <div class="print-footer">
+            TDMH-QC-F-003-03-Φ
         </div>
     </div>
 
