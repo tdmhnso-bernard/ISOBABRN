@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CQI Internal Audit System - ISO 9001:2015</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* LANDSCAPE PRINT OPTIMIZATION */
+        @page { size: landscape; margin: 0.4cm; }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; padding: 0; margin: 0; }
+            .print-container { width: 100%; border: none; box-shadow: none; margin: 0; padding: 0; }
+            table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+            th, td { border: 1.1px solid black !important; padding: 3px !important; font-size: 7.2pt; word-wrap: break-word; }
+            textarea { border: none !important; height: auto !important; overflow: visible !important; min-height: 20px !important; }
+            .checkbox-cell { width: 35px !important; }
+            .guidance-box { display: none !important; }
+            .summary-print-section { display: block !important; page-break-before: auto; }
+        }
+        
+        .audit-table th, .audit-table td { border: 1.2px solid #000; }
+        input[type="text"], textarea { border: none; width: 100%; height: 100%; padding: 4px; background: transparent; font-family: inherit; }
+        textarea { resize: vertical; min-height: 120px; line-height: 1.4; width: 100%; display: block; font-size: 11px; }
+
+        /* FINDING MARKS */
+        .checkbox-cell { 
+            text-align: center; cursor: pointer; min-width: 45px; transition: all 0.1s; 
+            font-size: 28px; font-weight: 900; height: 55px; vertical-align: middle; 
+            background-color: #fff; user-select: none;
+        }
+        .checkbox-cell:hover { background-color: #f1f5f9; }
+        .selected-c { background-color: #f0fdf4 !important; color: #16a34a !important; }
+        .selected-nc { background-color: #fef2f2 !important; color: #dc2626 !important; }
+        .selected-o { background-color: #f0f9ff !important; color: #0284c7 !important; }
+
+        .sub-clause { padding-left: 1.25rem !important; color: #334155; }
+        .clause-group { background-color: #f8fafc; font-weight: bold; text-transform: uppercase; border-top: 3px solid black !important; }
+        .requirement-text { display: block; margin-top: 5px; color: #475569; font-weight: normal; font-size: 9.5px; line-height: 1.4; white-space: pre-wrap; font-style: italic; background: #f8fafc; padding: 6px; border-radius: 4px; border-left: 4px solid #cbd5e1; }
+        
+        /* TAG UI */
+        .guidance-box { margin-top: 8px; padding: 8px; background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 6px; text-align: left; }
+        .guidance-label { font-size: 9px; font-weight: 800; color: #1e3a8a; text-transform: uppercase; margin-bottom: 6px; display: block; letter-spacing: 0.05em; }
+        .tag { display: inline-block; font-size: 9.5px; background: #eff6ff; color: #1d4ed8; padding: 4px 10px; border-radius: 6px; margin: 3px; cursor: pointer; border: 1px solid #bfdbfe; font-weight: 700; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .tag:hover { background: #1d4ed8; color: white; }
+        .tag-result { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
+        .tag-result:hover { background: #166534; color: white; }
+        .evidence-missing { border: 2px solid #f59e0b !important; background-color: #fffbeb !important; }
+    </style>
+</head>
+<body class="bg-slate-300 min-h-screen p-4 md:p-10 text-slate-900">
+
+    <div id="app" class="max-w-[1750px] mx-auto bg-white shadow-2xl rounded-sm overflow-hidden print-container">
+        
+        <!-- Header Nav -->
+        <div class="bg-slate-900 text-white p-4 flex justify-between items-center no-print sticky top-0 z-50">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-indigo-600 rounded flex items-center justify-center font-black text-sm uppercase">CQI</div>
+                <h1 class="text-base font-bold uppercase tracking-widest">Internal Quality Audit System</h1>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="window.print()" class="bg-slate-700 hover:bg-slate-600 px-5 py-2 rounded text-xs font-bold border border-slate-500 uppercase">Print Landscape</button>
+                <button onclick="saveToSheet()" id="saveBtn" class="bg-indigo-600 hover:bg-indigo-500 px-6 py-2 rounded text-xs font-bold transition flex items-center gap-2 shadow-lg uppercase">
+                    <span id="saveText">Save to Google Sheet</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Document Header -->
+        <div class="p-10 border-b">
+            <div class="flex justify-between items-start mb-8">
+                <div class="text-blue-900 font-black text-4xl tracking-tighter uppercase italic">CQI</div>
+                <div class="no-print"><span id="authStatus" class="text-[10px] text-slate-400 font-mono italic">System Ready</span></div>
+            </div>
+            <h2 class="text-3xl font-bold text-center underline mb-10 uppercase tracking-[0.25em]">INTERNAL QUALITY AUDIT CHECKLIST</h2>
+
+            <table class="w-full border-collapse border border-black text-[13px]">
+                <tr>
+                    <td class="border border-black p-4 font-bold bg-slate-50 w-[20%] uppercase">Date and Time of Audit:</td>
+                    <td class="border border-black p-0 w-[30%]"><input type="text" id="auditDate" class="w-full h-full p-4" placeholder="Enter date/time..."></td>
+                    <td class="border border-black p-4 font-bold bg-slate-50 w-[15%] uppercase">IQA No.</td>
+                    <td class="border border-black p-0 w-[35%]"><input type="text" id="iqaNo" class="w-full h-full p-4" value="26-01"></td>
+                </tr>
+                <tr>
+                    <td class="border border-black p-4 font-bold bg-slate-50 uppercase">Team Leader:</td>
+                    <td class="border border-black p-0"><input type="text" id="teamLeader" class="w-full h-full p-4" value="MC REYAN ANONUEVO RN MM"></td>
+                    <td class="border border-black p-4 font-bold bg-slate-50 uppercase">Auditee:</td>
+                    <td class="border border-black p-0"><input type="text" id="auditee" class="w-full h-full p-4" placeholder="Auditee Name"></td>
+                </tr>
+                <tr>
+                    <td class="border border-black p-4 font-bold bg-slate-50 uppercase">Audit Team:</td>
+                    <td class="border border-black p-0"><input type="text" id="auditTeam" class="w-full h-full p-4" value="BERNARD BERNABE, RN"></td>
+                    <td class="border border-black p-4 font-bold bg-slate-50 uppercase">Department:</td>
+                    <td class="border border-black p-0"><input type="text" id="department" class="w-full h-full p-4" placeholder="Department"></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Audit Table -->
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse border border-black text-[12px] audit-table" id="mainTable">
+                <thead>
+                    <tr class="bg-slate-100 text-center uppercase font-black">
+                        <th class="w-16 p-4 border border-black" rowspan="3">STDS</th>
+                        <th class="p-4 border border-black" rowspan="3">CLAUSE & REQUIREMENTS</th>
+                        <th class="p-4 border border-black" colspan="4">AUDIT FINDINGS</th>
+                        <th class="p-4 border border-black" rowspan="3" style="width: 38%;">EVIDENCE/S<br><span class="text-[9px] font-normal italic lowercase">(Record Proof - Click tags below)</span></th>
+                        <th class="p-4 border border-black" rowspan="3" style="width: 22%;">FEEDBACK<br><span class="text-[9px] font-normal italic lowercase">(Professional Phrasing - Click tags below)</span></th>
+                    </tr>
+                    <tr class="bg-slate-100 text-center uppercase font-black">
+                        <th class="w-14 border border-black" rowspan="2">C</th>
+                        <th class="border border-black" colspan="2">NC</th>
+                        <th class="w-14 border border-black" rowspan="2">O</th>
+                    </tr>
+                    <tr class="bg-slate-100 text-center uppercase font-black">
+                        <th class="w-16 border border-black text-[9px]">MAJOR</th>
+                        <th class="w-16 border border-black text-[9px]">MINOR</th>
+                    </tr>
+                </thead>
+                <tbody id="checklistBody"></tbody>
+            </table>
+        </div>
+
+        <!-- Summary findings footer -->
+        <div class="p-10 border-t-2 border-black summary-print-section">
+            <div class="grid grid-cols-2 gap-8">
+                <div>
+                    <h3 class="font-black text-sm uppercase mb-3 border-b-2 border-black">Finding Summary</h3>
+                    <div class="grid grid-cols-4 gap-2 text-xs font-bold mb-4">
+                        <div class="p-2 border border-black bg-emerald-50 text-center">C: <span id="summary-c">0</span></div>
+                        <div class="p-2 border border-black bg-red-50 text-center">MJ: <span id="summary-mj">0</span></div>
+                        <div class="p-2 border border-black bg-orange-50 text-center">MN: <span id="summary-mn">0</span></div>
+                        <div class="p-2 border border-black bg-blue-50 text-center">O: <span id="summary-o">0</span></div>
+                    </div>
+                    <textarea id="overallSummary" class="w-full h-40 p-4 border border-black text-sm" placeholder="Summarize overall audit conclusion..."></textarea>
+                </div>
+                <div class="hidden print:block">
+                     <h3 class="font-black text-sm uppercase mb-3 border-b-2 border-black">Authorization</h3>
+                     <div class="mt-20 flex justify-between gap-10">
+                        <div class="flex-1 text-center border-t border-black pt-2">
+                            <p class="font-bold uppercase text-[10px]" id="printLeaderName"></p>
+                            <p class="text-[8px] italic">Audit Team Leader</p>
+                        </div>
+                        <div class="flex-1 text-center border-t border-black pt-2">
+                            <p class="font-bold uppercase text-[10px]" id="printAuditeeName"></p>
+                            <p class="text-[8px] italic">Auditee / Dept. Head</p>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ISO_DATA = [
+            { id: '6.0', title: 'PLANNING', isHeader: true },
+            { id: '6.1', title: 'Actions to address risks and opportunities', std: 'ISO 9001',
+              req: 'The organization shall determine the risks and opportunities that need to be addressed to: a) give assurance of results; b) enhance desirable effects; c) prevent undesired effects; d) achieve improvement.',
+              tags: ['Risk Management Policy', 'Corporate Risk Register', 'SWOT Analysis', 'Context of Organization Review'],
+              phrasing: ['Risk management framework is robust', 'Comprehensive risk identification verified', 'Incomplete list of organizational risks', 'Opportunities for improvement noted but not actioned'] },
+            { id: '6.1.1', title: 'Determine risks and opportunities', isSub: true,
+              req: 'Organization shall consider context (4.1) and needs of interested parties (4.2) to determine risks/opportunities to:\na) give assurance; b) enhance effects; c) reduce undesired effects; d) achieve improvement',
+              tags: ['Risk Register (Rev No:)', 'SWOT Matrix (Date:)', 'Opportunity Log', 'Stakeholder Expectation Matrix'],
+              phrasing: ['Strategic risks effectively identified', 'Mitigation plans effectively implemented', 'No formal risk assessment noted', 'Risk analysis is outdated', 'Context issues properly translated into risk entries'] },
+            { id: '6.1.2', title: 'Planning actions', isSub: true,
+              req: 'The organization shall plan: a) actions to address these risks and opportunities; b) evaluate the effectiveness of these actions.',
+              tags: ['Action Plan Log', 'MOC Records', 'Effectiveness Evaluation Records', 'Risk Treatment Plan'],
+              phrasing: ['Actions address identified root risks', 'Evaluation confirms risk levels reduced', 'Lack of evidence for effectiveness evaluation', 'Risk treatment actions are pending completion'] },
+            { id: '6.2', title: 'Quality objectives and planning to achieve them', std: 'ISO 9001',
+              req: 'Establish objectives at relevant functions, levels, and processes. Objectives shall be measurable and consistent with policy.',
+              tags: ['Master KPI List', 'Quality Policy Alignment Review', 'Unit Objective Sheets'],
+              phrasing: ['Quality objectives are well-defined and measurable', 'Objectives are communicated across all levels', 'Gaps between policy and unit objectives', 'Lack of documented objectives for key processes'] },
+            { id: '6.2.1', title: 'Establishment of Quality Objectives', isSub: true,
+              req: 'The organization/unit shall establish quality objectives at relevant functions, levels and processes needed for the QMS. Objectives shall be: a) consistent with policy; b) measurable; c) consider requirements; d) relevant to conformity/satisfaction; e) monitored; f) communicated; g) updated.',
+              tags: ['Unit KPI Dashboard', 'Quality Goal Sheets', 'Toolbox Meeting Minutes', 'Performance Targets 2026'],
+              phrasing: ['Objectives are measurable and communicated', 'Targets not updated for current year', 'Objectives lack alignment with policy', 'KPIs effectively monitored at unit level'] },
+            { id: '6.2.2', title: 'Achieving Quality Objectives', isSub: true,
+              req: 'Determine: a) what will be done; b) resources; c) who responsible; d) when completed; e) how results evaluated.',
+              tags: ['Implementation Timeline', 'Resource List', 'KPI Roadmap', 'Quarterly Progress Reports'],
+              phrasing: ['Responsibilities and timelines clearly defined', 'Tracking mechanism established for goals', 'Gaps in resource allocation for objectives', 'Progress evaluation conducted regularly'] },
+            { id: '6.3', title: 'Planning of changes',
+              req: 'Changes shall be carried out in a planned manner. Consider: a) purpose/consequences; b) integrity of QMS; c) availability of resources; d) responsibility allocation.',
+              tags: ['Change Control Log', 'Impact Study Report', 'MOC Record', 'Updated Process Flowcharts'],
+              phrasing: ['Changes documented systematically', 'QMS integrity maintained during change', 'Unauthorized process changes observed', 'Risk assessment of changes verified'] },
+
+            { id: '7.0', title: 'SUPPORT', isHeader: true },
+            { id: '7.1.1', title: 'General Resources', std: 'ISO 9001',
+              req: 'Determine and provide resources for establishment, implementation, maintenance, and continual improvement of the QMS.',
+              tags: ['Budget Approval (2026)', 'Annual Procurement Plan', 'Capital Outlay Log', 'Facility Audit Report'],
+              phrasing: ['Adequate resources provided for operations', 'Resource scarcity impacting effectiveness', 'Infrastructure maintenance plan followed'] },
+            { id: '7.1.2', title: 'People',
+              req: 'Determine and provide the persons necessary for the effective implementation of its QMS and for the operation and control of its processes.',
+              tags: ['Manpower Inventory', 'Staffing Schedule', 'Org Chart', 'Retention Plan'],
+              phrasing: ['Personnel levels meet operational criteria', 'Manpower shortage noted in sampling', 'Responsibility matrix (RACI) is current'] },
+            { id: '7.1.5.1', title: 'Monitoring and measuring resources (General)', std: 'ISO 9001',
+              req: 'Provide resources for valid and reliable results. Ensure: a) suitable for specific activities; b) maintained for fitness.',
+              tags: ['Asset Registry', 'Maintenance Status Sticker', 'Service Contracts', 'Equipment Logbook'],
+              phrasing: ['Equipment is suitable and fit for purpose', 'Expired maintenance sticker on (ID:)', 'Environment suitable for monitoring tasks'] },
+            { id: '7.1.5.2', title: 'Measurement traceability', isSub: true,
+              req: 'Equipment shall be: a) calibrated/verified; b) identified; c) safeguarded. Determine validity of previous results if unfit.',
+              tags: ['Calibration Cert (ID:)', 'Master Calibration List', 'Traceability Record', 'External Calibration Report'],
+              phrasing: ['Traceability to standards confirmed', 'Calibration status verified current', 'Expired calibration found on device (ID:)', 'Calibration seals intact'] },
+            { id: '7.1.6', title: 'Organizational knowledge',
+              req: 'Determine knowledge necessary for the operation of processes and to achieve conformity.',
+              tags: ['SOP Electronic Library', 'Mentorship Logs', 'Training Modules', 'Institutional Knowledge Map'],
+              phrasing: ['Internal knowledge shared effectively', 'Institutional knowledge effectively retained', 'Gaps in knowledge transfer noted'] },
+            { id: '7.2', title: 'Competence',
+              req: 'a) determine competence; b) ensure education/training/experience; c) take actions for gaps; d) retain documented evidence.',
+              tags: ['Staff 201 Files', 'Competence Matrix', 'Training Certs', 'PRC Licenses'],
+              phrasing: ['Personnel meet defined competence criteria', 'Missing training evidence for sampled staff', 'Evaluation of training effectiveness noted'] },
+            { id: '7.3', title: 'Awareness',
+              req: 'Ensure awareness of: a) policy; b) objectives; c) contribution; d) non-conforming implications.',
+              tags: ['Interview Results', 'Orientation Records', 'Awareness Posters', 'Exam Results'],
+              phrasing: ['Staff demonstrate high awareness of Policy', 'Staff unaware of non-conformance implications', 'Objectives understood at operational level'] },
+            { id: '7.4', title: 'Communication',
+              req: 'Determine internal/external communications: a) what; b) when; c) with whom; d) how; e) who.',
+              tags: ['Communication Matrix', 'Internal Memo Log', 'Meeting Minutes', 'Stakeholder Report'],
+              phrasing: ['Communication plan is active and followed', 'Communication breakdown observed', 'External stakeholder reporting is timely'] },
+            { id: '7.5', title: 'Documented information', std: 'ISO 9001',
+              req: 'The QMS shall include documented information required by ISO 9001 and that determined as necessary by the organization.',
+              tags: ['Document Control Policy', 'Master List of Records', 'Filing System Map'],
+              phrasing: ['Documentation structure aligns with standard', 'Required records are readily available', 'Documentation gaps found in key processes', 'Electronic document hierarchy is clear'] },
+            { id: '7.5.1', title: 'General Documentation', isSub: true,
+              req: 'Include: a) required by ISO 9001; b) determined as necessary for effectiveness.',
+              tags: ['Master Document List (MDL)', 'Quality Manual', 'Record Index', 'Manuals/WIs'],
+              phrasing: ['Documentary requirements met per standard', 'Required ISO documents are missing/incomplete', 'Internal controls support QMS stability'] },
+            { id: '7.5.2', title: 'Creating and updating', isSub: true,
+              req: 'Ensure appropriate: a) identification (title, date); b) format/media; c) review/approval for suitability.',
+              tags: ['Doc Header Check', 'Approval Signatures', 'Revision History Log', 'Review Cycle Report'],
+              phrasing: ['Standard format and review cycle verified', 'Documents lack required approval signatures', 'Revision history consistently maintained'] },
+            { id: '7.5.3', title: 'Control of documented information', isSub: true,
+              req: 'Ensure availability, protection, and control of distribution, storage, changes, and retention.',
+              tags: ['Distribution Log', 'Revision History Log', 'Disposal Record', 'Access Control List'],
+              phrasing: ['Documents protected from loss or misuse', 'Unauthorized document copies observed', 'Retention periods followed per policy'] },
+
+            { id: '8.0', title: 'OPERATION', isHeader: true },
+            { id: '8.1', title: 'Operational planning and control', std: 'ISO 9001',
+              req: 'Plan, implement, and control processes to meet requirements and planning actions.',
+              tags: ['Process Flowchart', 'Acceptance Checklist', 'Work Instruction (WI)', 'Operational Plan'],
+              phrasing: ['Operational controls effectively established', 'Process deviations observed vs criteria', 'Control plans align with risk assessment'] },
+            { id: '8.5', title: 'Production and Service Provision', std: 'ISO 9001',
+              req: 'Implement production and service provision under controlled conditions.',
+              tags: ['Production Schedule', 'Service Delivery Standard', 'Operations Manual'],
+              phrasing: ['Operations conducted under strict controls', 'Process monitoring records are consistent', 'Operational inconsistencies observed', 'Service standards effectively communicated'] },
+            { id: '8.5.1', title: 'Control of Provision', std: 'ISO 9001', isSub: true,
+              req: 'Implement provision under controlled conditions.',
+              tags: ['Daily Operational Log', 'SOP Verification', 'Equipment Maintenance', 'QC Logs'],
+              phrasing: ['Services provided under controlled conditions', 'Operational logs incomplete/inaccurate', 'SOP adherence verified via records'] },
+            { id: '8.5.2', title: 'Identification and Traceability', std: 'ISO 9001', isSub: true,
+              req: 'Maintain appropriate identification throughout provision.',
+              tags: ['Patient ID Wristbands', 'Specimen Labeling Log', 'Barcode Tracking', 'Lot Traceability'],
+              phrasing: ['Traceability is continuous and reliable', 'Identification markers missing from samples', 'Unique ID system verified effective'] },
+            { id: '8.6', title: 'Release of Products/Services',
+              req: 'Complete arrangements satisfactorily before release.',
+              tags: ['Final Verification Log', 'Discharge Sign-off', 'Release Record', 'QC Pass Stamp'],
+              phrasing: ['Verification of release criteria confirmed', 'Product released before final verification', 'Authorized personnel performed release'] },
+            { id: '8.7', title: 'Control of Non-conforming Outputs',
+              req: 'Identify and control to prevent unintended use.',
+              tags: ['NC Report Log (CAR)', 'Quarantine Record', 'Tagging System', 'NC Disposal Log'],
+              phrasing: ['NC items identified and segregated', 'No evidence of NC control mechanism', 'Disposition of NC outputs documented'] },
+
+            { id: '9.0', title: 'PERFORMANCE EVALUATION', isHeader: true },
+            { id: '9.1', title: 'Monitoring, measurement, analysis and evaluation', std: 'ISO 9001',
+              req: 'Determine what needs monitoring, methods, when to perform, and when to analyze results.',
+              tags: ['Performance Monitoring Plan', 'Measurement Master List', 'Data Analytics Policy'],
+              phrasing: ['Performance evaluation systems are comprehensive', 'Regular analysis of data verified', 'Inadequate monitoring of critical metrics', 'Monitoring frequencies are not adhered to'] },
+            { id: '9.1.1', title: 'General monitoring/measurement', std: 'ISO 9001', isSub: true,
+              req: 'Determine monitoring needs, methods, and timing to ensure valid results.',
+              tags: ['Monitoring Schedule', 'Data Analysis Plan', 'KPI Reports', 'Logbook Audit Trail'],
+              phrasing: ['Monitoring methods appropriate and followed', 'Frequency of evaluation is compliant', 'Required metrics not being monitored'] },
+            { id: '9.1.2', title: 'Customer satisfaction', isSub: true,
+              req: 'Monitor perceptions of degree of fulfilled needs/expectations.',
+              tags: ['Satisfaction Survey', 'Complaint Log', 'Feedback Box Record', 'Focus Group Minutes'],
+              phrasing: ['Patient feedback systems are robust', 'Satisfaction monitoring lacks adequate sampling', 'Analysis of customer data leads to action'] },
+            { id: '9.1.3', title: 'Analysis and evaluation', isSub: true,
+              req: 'Analyze data for conformity, satisfaction, performance, planning effectiveness, provider performance, etc.',
+              tags: ['Trend Chart (KPI)', 'Statistical Analysis', 'Evaluation Report', 'Supplier Performance Log'],
+              phrasing: ['Data used effectively for improvement', 'Analysis results not reported to stakeholders', 'Statistical techniques applied correctly'] },
+            { id: '9.2', title: 'Internal Audit', std: 'ISO 9001',
+              req: 'Conducted at planned intervals; verify conformance and effectiveness.',
+              tags: ['Audit Program 2026', 'Audit Report (ID:)', 'Auditor Qualifications', 'Closing Meeting Minutes'],
+              phrasing: ['Internal audits conducted per schedule', 'Audit results reported to management', 'Auditors remain impartial'] },
+            { id: '9.3', title: 'Management Review', std: 'ISO 9001',
+              req: 'Review QMS for suitability, adequacy, and effectiveness.',
+              tags: ['Management Review Minutes', 'Action Item Tracking List', 'Input Data Package'],
+              phrasing: ['Review covers all required standard inputs', 'Management review intervals exceeded', 'Action items tracked to completion'] },
+
+            { id: '10.0', title: 'IMPROVEMENT', isHeader: true },
+            { id: '10.2', title: 'NC & Corrective Action', std: 'ISO 9001',
+              req: 'Reaction to NC/complaints, evaluate root cause, review effectiveness, update risks.',
+              tags: ['CAR File (ID:)', 'Root Cause Analysis Record', 'Complaint Log', 'Risk Update Record'],
+              phrasing: ['Corrective actions address systemic root causes', 'Recurrence of NC due to poor root cause analysis', 'Timeliness of CA is satisfactory'] },
+            { id: '10.3', title: 'Continual improvement',
+              req: 'Continually improve suitability, adequacy and effectiveness of QMS.',
+              tags: ['Improvement Project Log', 'Efficiency Metric Chart', 'Suggestion Box Record', 'CI Meeting Minutes'],
+              phrasing: ['Evidence confirms ongoing optimization', 'Limited evidence of proactive improvement', 'QMS suitability improved via initiatives'] }
+        ];
+
+        const sessionStore = {};
+
+        function init() {
+            renderTable();
+            setInterval(() => {
+                document.getElementById('printLeaderName').innerText = document.getElementById('teamLeader').value;
+                document.getElementById('printAuditeeName').innerText = document.getElementById('auditee').value;
+            }, 1000);
+        }
+
+        function renderTable() {
+            const body = document.getElementById('checklistBody');
+            body.innerHTML = '';
+            ISO_DATA.forEach(item => {
+                const tr = document.createElement('tr');
+                if (item.isHeader) {
+                    tr.className = "clause-group";
+                    tr.innerHTML = `<td class="border border-black p-4 text-center font-black">STDS</td><td class="border border-black p-4" colspan="7">${item.title}</td>`;
+                } else {
+                    const cleanId = item.id.replace(/\./g, '_');
+                    sessionStore[cleanId] = { finding: null, evidence: '', feedback: '' };
+                    tr.innerHTML = `
+                        <td class="border border-black p-2 text-center font-bold text-[10px] uppercase">${item.std || ''}</td>
+                        <td class="border border-black p-3 ${item.isSub ? 'sub-clause' : 'font-bold'}">${item.id} ${item.title}<span class="requirement-text">${item.req || ''}</span></td>
+                        <td class="border border-black checkbox-cell" onclick="setFinding('${cleanId}', 'C', this)"></td>
+                        <td class="border border-black checkbox-cell" onclick="setFinding('${cleanId}', 'MJ', this)"></td>
+                        <td class="border border-black checkbox-cell" onclick="setFinding('${cleanId}', 'MN', this)"></td>
+                        <td class="border border-black checkbox-cell" onclick="setFinding('${cleanId}', 'O', this)"></td>
+                        <td class="border border-black p-3 align-top relative">
+                            <textarea id="ev_${cleanId}" oninput="validateEv('${cleanId}', this.value)"></textarea>
+                            <div class="guidance-box no-print">
+                                <span class="guidance-label">Evidence Checklist:</span>
+                                ${(item.tags || []).map(t => `<span class="tag" onclick="insertText('ev_${cleanId}', '${t}', '${cleanId}', 'evidence')">${t}</span>`).join('')}
+                            </div>
+                        </td>
+                        <td class="border border-black p-3 align-top">
+                            <textarea id="fb_${cleanId}" oninput="syncVal('${cleanId}', 'feedback', this.value)" placeholder="Conclusion..."></textarea>
+                            <div class="guidance-box no-print">
+                                <span class="guidance-label">Professional Phrases:</span>
+                                ${(item.phrasing || []).map(r => `<span class="tag tag-result" onclick="insertText('fb_${cleanId}', '${r}', '${cleanId}', 'feedback')">${r}</span>`).join('')}
+                            </div>
+                        </td>`;
+                }
+                body.appendChild(tr);
+            });
+        }
+
+        window.insertText = (targetId, text, id, field) => {
+            const area = document.getElementById(targetId);
+            const sep = area.value ? "; " : "• ";
+            area.value += sep + text;
+            if (field === 'evidence') validateEv(id, area.value); else syncVal(id, field, area.value);
+            area.focus();
+        };
+
+        window.validateEv = (id, val) => {
+            const area = document.getElementById('ev_'+id);
+            if(sessionStore[id].finding && !val.trim()) area.classList.add('evidence-missing'); else area.classList.remove('evidence-missing');
+            syncVal(id, 'evidence', val);
+        };
+
+        window.setFinding = (id, val, el) => {
+            const row = el.parentElement;
+            row.querySelectorAll('.checkbox-cell').forEach(c => { c.innerText = ''; c.classList.remove('selected-c', 'selected-nc', 'selected-o'); });
+            if (sessionStore[id].finding === val) {
+                sessionStore[id].finding = null;
+                document.getElementById('ev_'+id).classList.remove('evidence-missing');
+            } else {
+                sessionStore[id].finding = val;
+                el.innerText = '✓';
+                if(val === 'C') el.classList.add('selected-c'); else if(val.includes('M')) el.classList.add('selected-nc'); else if(val === 'O') el.classList.add('selected-o');
+                validateEv(id, document.getElementById('ev_'+id).value);
+            }
+            updateSummary();
+        };
+
+        function updateSummary() {
+            let counts = { C: 0, MJ: 0, MN: 0, O: 0 };
+            Object.values(sessionStore).forEach(s => {
+                if(s.finding === 'C') counts.C++; else if(s.finding === 'MJ') counts.MJ++; else if(s.finding === 'MN') counts.MN++; else if(s.finding === 'O') counts.O++;
+            });
+            document.getElementById('summary-c').innerText = counts.C;
+            document.getElementById('summary-mj').innerText = counts.MJ;
+            document.getElementById('summary-mn').innerText = counts.MN;
+            document.getElementById('summary-o').innerText = counts.O;
+        }
+
+        window.syncVal = (id, field, val) => sessionStore[id][field] = val;
+
+        window.saveToSheet = () => {
+            const btn = document.getElementById('saveBtn');
+            const saveText = document.getElementById('saveText');
+            btn.disabled = true;
+            const originalText = saveText.innerText;
+            saveText.innerText = "Syncing...";
+
+            const payload = {
+                meta: { date: document.getElementById('auditDate').value, no: document.getElementById('iqaNo').value, dept: document.getElementById('department').value, leader: document.getElementById('teamLeader').value, auditee: document.getElementById('auditee').value, summary: document.getElementById('overallSummary').value },
+                totals: { C: document.getElementById('summary-c').innerText, MJ: document.getElementById('summary-mj').innerText, MN: document.getElementById('summary-mn').innerText, O: document.getElementById('summary-o').innerText },
+                findings: sessionStore
+            };
+
+            if (typeof google !== 'undefined' && google.script && google.script.run) {
+                google.script.run
+                  .withSuccessHandler(() => { 
+                      alert("Audit data successfully synced to Google Sheet!"); 
+                      btn.disabled = false; 
+                      saveText.innerText = originalText; 
+                  })
+                  .withFailureHandler(err => { 
+                      alert("Error: " + err); 
+                      btn.disabled = false; 
+                      saveText.innerText = originalText; 
+                  })
+                  .processAuditData(payload);
+            } else {
+                console.log("Payload:", payload);
+                alert("Running in preview mode - Check console for JSON payload. Integration requires Google Apps Script environment.");
+                btn.disabled = false;
+                saveText.innerText = originalText;
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
