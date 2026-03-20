@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CQI Internal Audit System - Hospital ISO 9001:2015</title>
+    <title>Internal Quality Audit Checklist - Hospital ISO 9001:2015</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* LANDSCAPE PRINT OPTIMIZATION */
-        @page { size: landscape; margin: 0.4cm; }
+        @page { size: landscape; margin: 0.5cm; }
         @media print {
             .no-print { display: none !important; }
             body { background: white; padding: 0; margin: 0; }
@@ -15,20 +15,21 @@
             table { border-collapse: collapse; width: 100%; table-layout: fixed; border: 1.5px solid black !important; }
             th, td { border: 1.1px solid black !important; padding: 4px !important; font-size: 8pt; word-wrap: break-word; vertical-align: top; }
             textarea { border: none !important; height: auto !important; overflow: visible !important; min-height: 20px !important; }
-            .checkbox-cell { width: 35px !important; font-size: 14pt !important; text-align: center !important; }
+            .checkbox-cell { width: 30px !important; font-size: 12pt !important; text-align: center !important; font-weight: bold; }
             .guidance-box { display: none !important; }
             .summary-print-section { display: block !important; page-break-before: auto; }
-            .requirement-text { background: transparent !important; border: none !important; padding: 0 !important; }
+            .requirement-text { background: transparent !important; border: none !important; padding: 0 !important; color: #333 !important; }
+            input[type="text"] { border: none !important; }
         }
         
         .audit-table th, .audit-table td { border: 1.2px solid #000; }
         input[type="text"], textarea { border: none; width: 100%; height: 100%; padding: 4px; background: transparent; font-family: inherit; }
-        textarea { resize: vertical; min-height: 100px; line-height: 1.4; width: 100%; display: block; font-size: 11px; }
+        textarea { resize: vertical; min-height: 80px; line-height: 1.4; width: 100%; display: block; font-size: 11px; }
 
         /* FINDING MARKS */
         .checkbox-cell { 
-            text-align: center; cursor: pointer; min-width: 40px; transition: all 0.1s; 
-            font-size: 24px; font-weight: 400; height: 50px; vertical-align: middle; 
+            text-align: center; cursor: pointer; min-width: 35px; transition: all 0.1s; 
+            font-size: 18px; font-weight: bold; height: 40px; vertical-align: middle; 
             background-color: #fff; user-select: none;
         }
         .checkbox-cell:hover { background-color: #f1f5f9; }
@@ -37,46 +38,55 @@
         .selected-o { background-color: #f0f9ff !important; }
         .selected-ofi { background-color: #fffbeb !important; }
 
-        .sub-clause { padding-left: 1.25rem !important; color: #334155; }
-        .clause-group { background-color: #f8fafc; font-weight: bold; text-transform: uppercase; border-top: 2.5px solid black !important; }
-        .requirement-text { display: block; margin-top: 5px; color: #475569; font-weight: normal; font-size: 10px; line-height: 1.4; white-space: pre-wrap; font-style: italic; background: #f8fafc; padding: 6px; border-radius: 4px; border-left: 4px solid #cbd5e1; }
+        .sub-clause { padding-left: 1rem !important; }
+        .clause-group { background-color: #f1f5f9; font-weight: bold; text-transform: uppercase; border-top: 2px solid black !important; }
+        .requirement-text { display: block; margin-top: 3px; color: #475569; font-weight: normal; font-size: 9px; line-height: 1.3; white-space: pre-wrap; font-style: italic; background: #f8fafc; padding: 4px; border-radius: 2px; border-left: 3px solid #cbd5e1; }
         
         /* TAG UI */
-        .guidance-box { margin-top: 8px; padding: 8px; background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 6px; text-align: left; }
-        .guidance-label { font-size: 9px; font-weight: 800; color: #1e3a8a; text-transform: uppercase; margin-bottom: 6px; display: block; letter-spacing: 0.05em; }
-        .tag { display: inline-block; font-size: 9.5px; background: #eff6ff; color: #1d4ed8; padding: 4px 10px; border-radius: 6px; margin: 3px; cursor: pointer; border: 1px solid #bfdbfe; font-weight: 700; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .guidance-box { margin-top: 5px; padding: 5px; background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 4px; text-align: left; }
+        .guidance-label { font-size: 8px; font-weight: 800; color: #1e3a8a; text-transform: uppercase; margin-bottom: 4px; display: block; }
+        .tag { display: inline-block; font-size: 9px; background: #eff6ff; color: #1d4ed8; padding: 2px 6px; border-radius: 4px; margin: 2px; cursor: pointer; border: 1px solid #bfdbfe; font-weight: 600; }
         .tag:hover { background: #1d4ed8; color: white; }
         .tag-result { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
-        .tag-result:hover { background: #166534; color: white; }
         .evidence-missing { border: 2px solid #f59e0b !important; background-color: #fffbeb !important; }
+        
+        /* Sync Pulse Animation */
+        .sync-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
     </style>
 </head>
-<body class="bg-slate-300 min-h-screen p-4 md:p-8 text-slate-900">
+<body class="bg-slate-200 min-h-screen p-4 md:p-6 text-slate-900">
 
-    <div id="app" class="max-w-[1750px] mx-auto bg-white shadow-2xl rounded-sm overflow-hidden print-container">
+    <div id="app" class="max-w-[1700px] mx-auto bg-white shadow-xl overflow-hidden print-container">
         
-        <!-- Header Nav -->
-        <div class="bg-slate-900 text-white p-4 flex justify-between items-center no-print sticky top-0 z-50">
+        <!-- Navbar -->
+        <div class="bg-slate-800 text-white p-4 flex justify-between items-center no-print">
             <div class="flex items-center gap-4">
-                <div class="w-10 h-10 bg-indigo-600 rounded flex items-center justify-center font-black text-sm uppercase">CQI</div>
-                <h1 class="text-base font-bold uppercase tracking-widest">Internal Quality Audit System - Hospital</h1>
+                <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center font-bold text-xs">IQA</div>
+                <div>
+                    <h1 class="text-sm font-bold uppercase tracking-wider">Hospital IQA System</h1>
+                    <div id="syncStatus" class="text-[10px] text-slate-400 flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-slate-500" id="syncDot"></span>
+                        <span id="syncText">Ready</span>
+                    </div>
+                </div>
             </div>
-            <div class="flex gap-3">
-                <button onclick="window.print()" class="bg-slate-700 hover:bg-slate-600 px-5 py-2 rounded text-xs font-bold border border-slate-500 uppercase">Print Landscape</button>
-                <button onclick="saveToSheet()" id="saveBtn" class="bg-indigo-600 hover:bg-indigo-500 px-6 py-2 rounded text-xs font-bold transition flex items-center gap-2 shadow-lg uppercase">
-                    <span id="saveText">Save to Google Sheet</span>
+            <div class="flex gap-2">
+                <button onclick="window.print()" class="bg-slate-600 hover:bg-slate-500 px-4 py-2 rounded text-[10px] font-bold uppercase">Print Landscape</button>
+                <button onclick="saveToSheet()" id="saveBtn" class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded text-[10px] font-bold transition flex items-center gap-2 uppercase shadow-md">
+                    <span id="saveText">Force Sync Now</span>
                 </button>
             </div>
         </div>
 
-        <!-- Document Header -->
-        <div class="p-8">
-            <h2 class="text-xl font-bold text-center underline mb-6 uppercase tracking-[0.1em]">INTERNAL QUALITY AUDIT CHECKLIST</h2>
+        <!-- Document Header Area -->
+        <div class="p-6">
+            <h2 class="text-lg font-bold text-center underline mb-4 uppercase tracking-widest">INTERNAL QUALITY AUDIT CHECKLIST</h2>
 
-            <!-- Legend Box -->
+            <!-- Legend Table -->
             <div class="flex justify-center mb-6">
-                <table class="w-64 border-collapse border border-black text-[10px]">
-                    <tr class="bg-slate-50 font-bold"><td colspan="2" class="border border-black text-center p-1">LEGEND:</td></tr>
+                <table class="w-80 border-collapse border border-black text-[10px]">
+                    <tr class="bg-gray-50 font-bold"><td colspan="2" class="border border-black text-center p-1">LEGEND:</td></tr>
                     <tr><td class="border border-black text-center font-bold w-12 p-1">C</td><td class="border border-black p-1 uppercase">Conformance</td></tr>
                     <tr><td class="border border-black text-center font-bold p-1">NC</td><td class="border border-black p-1 uppercase">Nonconformance</td></tr>
                     <tr><td class="border border-black text-center font-bold p-1">O</td><td class="border border-black p-1 uppercase">Observation</td></tr>
@@ -84,82 +94,83 @@
                 </table>
             </div>
 
-            <!-- Main Info Table -->
-            <table class="w-full border-collapse border border-black text-[12px]">
+            <!-- Meta Data Table -->
+            <table class="w-full border-collapse border border-black text-[11px] mb-4">
                 <tr>
-                    <td class="border border-black p-2 font-bold bg-slate-50 w-[20%] uppercase">Date and Time of Audit:</td>
-                    <td class="border border-black p-0 w-[25%]"><input type="text" id="auditDate" class="w-full h-full p-2" placeholder="Enter date/time..."></td>
-                    <td class="border border-black p-2 font-bold bg-slate-50 w-[15%] uppercase">IQA No.</td>
-                    <td colspan="2" class="border border-black p-0"><input type="text" id="iqaNo" class="w-full h-full p-2 font-bold" value="26-01"></td>
+                    <td class="border border-black p-2 font-bold w-[20%] uppercase">Date and Time of Audit:</td>
+                    <td class="border border-black p-0 w-[25%]"><input type="text" id="auditDate" class="p-2" placeholder="e.g. Oct 24, 2023 09:00 AM" oninput="triggerAutoSave()"></td>
+                    <td class="border border-black p-2 font-bold w-[15%] uppercase">IQA No.</td>
+                    <td colspan="2" class="border border-black p-0"><input type="text" id="iqaNo" class="p-2 font-bold" value="26-01" oninput="triggerAutoSave()"></td>
                 </tr>
                 <tr>
-                    <td class="border border-black p-2 font-bold bg-slate-50 uppercase">Team Leader:</td>
-                    <td class="border border-black p-0"><input type="text" id="teamLeader" class="w-full h-full p-2" value="MC REYAN ANONUEVO RN MM"></td>
+                    <td rowspan="2" class="border border-black p-2 font-bold uppercase">Team Leader: MC REYAN ANONUEVO RN MM</td>
                     <td class="border border-black p-2 font-bold bg-slate-50 uppercase">Auditee:</td>
-                    <td class="border border-black p-0 w-[20%]"><input type="text" id="auditee" class="w-full h-full p-2" placeholder="Auditee Name"></td>
+                    <td class="border border-black p-0"><input type="text" id="auditee" class="p-2" placeholder="Name of Auditee" oninput="triggerAutoSave()"></td>
                     <td class="border border-black p-2 font-bold bg-slate-50 w-[10%] uppercase">Dept.</td>
-                    <td class="border border-black p-0"><input type="text" id="department" class="w-full h-full p-2" placeholder="Department"></td>
+                    <td class="border border-black p-0"><input type="text" id="department" class="p-2" placeholder="Department Name" oninput="triggerAutoSave()"></td>
                 </tr>
                 <tr>
-                    <td class="border border-black p-2 font-bold bg-slate-50 uppercase">Audit Team:</td>
-                    <td colspan="4" class="border border-black p-0"><input type="text" id="auditTeam" class="w-full h-full p-2" value="BERNARD BERNABE, RN"></td>
+                    <td colspan="4" class="border border-black p-2 font-bold uppercase">Audit Team: BERNARD BERNABE, RN</td>
                 </tr>
             </table>
-        </div>
 
-        <!-- Audit Table -->
-        <div class="overflow-x-auto px-1">
-            <table class="w-full border-collapse border border-black text-[11px] audit-table" id="mainTable">
-                <thead>
-                    <tr class="bg-slate-50 text-center uppercase font-bold">
-                        <th class="w-20 p-2 border border-black" rowspan="3">STANDARDS</th>
-                        <th class="p-2 border border-black" rowspan="3">CLAUSE</th>
-                        <th class="p-2 border border-black" colspan="5">AUDIT FINDINGS<br><span class="text-[8px] italic normal-case font-normal">(PLEASE CHECK)</span></th>
-                        <th class="p-2 border border-black" rowspan="3" style="width: 32%;">EVIDENCE/S:</th>
-                        <th class="p-2 border border-black" rowspan="3" style="width: 22%;">FEEDBACK</th>
-                    </tr>
-                    <tr class="bg-slate-50 text-center uppercase font-bold">
-                        <th class="w-10 border border-black" rowspan="2">C</th>
-                        <th class="border border-black" colspan="2">NC</th>
-                        <th class="w-10 border border-black" rowspan="2">O</th>
-                        <th class="w-10 border border-black" rowspan="2">OFI</th>
-                    </tr>
-                    <tr class="bg-slate-50 text-center uppercase font-bold">
-                        <th class="w-12 border border-black text-[8px]">MAJOR</th>
-                        <th class="w-12 border border-black text-[8px]">MINOR</th>
-                    </tr>
-                </thead>
-                <tbody id="checklistBody"></tbody>
-            </table>
-        </div>
+            <!-- Main Audit Grid -->
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse border border-black text-[10px] audit-table" id="mainTable">
+                    <thead>
+                        <tr class="bg-gray-100 text-center uppercase font-bold">
+                            <th class="w-20 p-2 border border-black" rowspan="3">STANDARDS</th>
+                            <th class="p-2 border border-black" rowspan="3">CLAUSE</th>
+                            <th class="p-2 border border-black" colspan="5">AUDIT FINDINGS<br><span class="text-[7px] italic normal-case font-normal">(PLEASE CHECK)</span></th>
+                            <th class="p-2 border border-black" rowspan="3" style="width: 28%;">EVIDENCE/S:</th>
+                            <th class="p-2 border border-black" rowspan="3" style="width: 18%;">FEEDBACK</th>
+                        </tr>
+                        <tr class="bg-gray-100 text-center uppercase font-bold">
+                            <th class="w-8 border border-black" rowspan="2">C</th>
+                            <th class="border border-black" colspan="2">NC</th>
+                            <th class="w-8 border border-black" rowspan="2">O</th>
+                            <th class="w-8 border border-black" rowspan="2">OFI</th>
+                        </tr>
+                        <tr class="bg-gray-100 text-center uppercase font-bold">
+                            <th class="w-10 border border-black text-[7px]">MAJOR</th>
+                            <th class="w-10 border border-black text-[7px]">MINOR</th>
+                        </tr>
+                    </thead>
+                    <tbody id="checklistBody">
+                        <!-- Content generated by JS -->
+                    </tbody>
+                </table>
+            </div>
 
-        <!-- Summary findings footer -->
-        <div class="p-8 border-t-2 border-black summary-print-section">
-            <div class="grid grid-cols-2 gap-8">
+            <!-- Summary Footer -->
+            <div class="mt-4 p-4 border border-black grid grid-cols-2 gap-4">
                 <div>
-                    <h3 class="font-black text-sm uppercase mb-3 border-b-2 border-black">Finding Summary</h3>
-                    <div class="grid grid-cols-5 gap-1 text-xs font-bold mb-4">
-                        <div class="p-2 border border-black text-center">C: <span id="summary-c">0</span></div>
-                        <div class="p-2 border border-black text-center">MJ: <span id="summary-mj">0</span></div>
-                        <div class="p-2 border border-black text-center">MN: <span id="summary-mn">0</span></div>
-                        <div class="p-2 border border-black text-center">O: <span id="summary-o">0</span></div>
-                        <div class="p-2 border border-black text-center">OFI: <span id="summary-ofi">0</span></div>
+                    <h3 class="font-bold text-xs uppercase mb-2">Finding Summary</h3>
+                    <div class="grid grid-cols-5 gap-1 text-[10px] font-bold mb-2">
+                        <div class="p-1 border border-black text-center bg-gray-50">C: <span id="summary-c">0</span></div>
+                        <div class="p-1 border border-black text-center bg-gray-50">MJ: <span id="summary-mj">0</span></div>
+                        <div class="p-1 border border-black text-center bg-gray-50">MN: <span id="summary-mn">0</span></div>
+                        <div class="p-1 border border-black text-center bg-gray-50">O: <span id="summary-o">0</span></div>
+                        <div class="p-1 border border-black text-center bg-gray-50">OFI: <span id="summary-ofi">0</span></div>
                     </div>
-                    <textarea id="overallSummary" class="w-full h-32 p-3 border border-black text-sm" placeholder="Summarize overall hospital audit conclusion..."></textarea>
+                    <textarea id="overallSummary" class="w-full h-20 p-2 border border-gray-300 text-[10px]" placeholder="Overall Hospital Audit Conclusion..." oninput="triggerAutoSave()"></textarea>
                 </div>
-                <div class="hidden print:block">
-                     <h3 class="font-black text-sm uppercase mb-3 border-b-2 border-black">Authorization</h3>
-                     <div class="mt-16 flex justify-between gap-10">
-                        <div class="flex-1 text-center border-t border-black pt-2">
-                            <p class="font-bold uppercase text-[10px]" id="printLeaderName"></p>
-                            <p class="text-[8px] italic">Audit Team Leader</p>
+                <div class="flex flex-col justify-end">
+                    <div class="flex justify-between gap-8 px-4">
+                        <div class="flex-1 text-center border-t border-black pt-1">
+                            <p class="font-bold uppercase text-[9px]">MC REYAN ANONUEVO RN MM</p>
+                            <p class="text-[7px] italic">Audit Team Leader</p>
                         </div>
-                        <div class="flex-1 text-center border-t border-black pt-2">
-                            <p class="font-bold uppercase text-[10px]" id="printAuditeeName"></p>
-                            <p class="text-[8px] italic">Medical/Dept. Head</p>
+                        <div class="flex-1 text-center border-t border-black pt-1">
+                            <p class="font-bold uppercase text-[9px]" id="printAuditeeLabel">____________________</p>
+                            <p class="text-[7px] italic">Auditee / Dept. Head</p>
                         </div>
-                     </div>
+                    </div>
                 </div>
+            </div>
+            
+            <div class="mt-2 text-right text-[8px] font-bold">
+                TDMH-QC-F-003-03-Φ
             </div>
         </div>
     </div>
@@ -169,114 +180,108 @@
 
         const ISO_DATA = [
             { id: '6.0', title: 'PLANNING', isHeader: true },
-            { id: '6.1', title: 'Actions to address risks and opportunities', std: 'ISO 9001:2015',
-              req: 'The organization shall determine the risks and opportunities that need to be addressed to: a) give assurance of results; b) enhance desirable effects; c) prevent undesired effects; d) achieve improvement.',
-              tags: ['[Clinical] Patient Safety Risk Registry', '[Admin] Financial/Operational Risk Map', '[Unit] Opportunity Identification Log', 'Hospital-Wide Risk Framework'],
-              phrasing: ['Evidence confirms a robust hospital-wide risk management framework is active', 'Strategic clinical and non-clinical risk registers are well-maintained', 'Comprehensive risk identification and treatment plans were verified', 'Incomplete assessment of departmental opportunities noted'] },
-            { id: '6.1.1', title: 'Determine risks and opportunities', isSub: true,
-              req: 'Organization shall consider context (4.1) and needs of interested parties (4.2) to determine risks/opportunities.',
-              tags: ['[Clinical] Infection Control Risks', '[Admin] Staffing Shortage Analysis', 'SWOT/PESTEL Analysis', 'Departmental Context Review'],
-              phrasing: ['Patient-centered risks are prioritized and integrated into unit assessments', 'Strategic hospital risks effectively identified through context review', 'No formal evidence of risk assessment was presented for review', 'Identification of interested parties\' needs is well-documented'] },
-            { id: '6.1.2', title: 'Planning actions', isSub: true,
-              req: 'The organization shall plan: a) actions; b) evaluate effectiveness.',
-              tags: ['[Clinical] Clinical Audit Action Plans', '[Admin] MOC Authorization Records', 'Effectiveness Review Logs', 'Risk Treatment Action Plan'],
-              phrasing: ['Planned actions address systemic root causes of identified patient safety risks', 'Post-implementation evaluations confirm significant reduction in risk levels', 'Monitoring of action effectiveness is inconsistent across sampled units'] },
-            { id: '6.2', title: 'Quality objectives and planning to achieve them', std: 'ISO 9001:2015',
-              req: 'Establish objectives at relevant functions, levels, and processes.',
-              tags: ['[Clinical] Patient Outcome Metrics', '[Admin] TAT for Admissions/Billing', 'KPI Dashboards', 'Strategic Goal Setting'],
-              phrasing: ['Hospital quality objectives are measurable and aligned with clinical standards', 'Unit-level KPIs demonstrate alignment with the corporate quality policy', 'Objectives lack specific measurable targets for the current period'] },
-            { id: '6.2.1', title: 'Establishment of Quality Objectives', isSub: true,
-              req: 'Objectives shall be: measurable, consistent with policy, monitored, and updated.',
-              tags: ['[Clinical] Mortality/Morbidity Goals', '[Admin] Billing Accuracy Targets', 'Staff Awareness orientation', 'KPI Review Minutes'],
-              phrasing: ['Personnel demonstrate awareness of established unit performance goals', 'Quality objectives are monitored through monthly departmental huddles', 'Administrative targets require updating to reflect current service capabilities'] },
-            { id: '6.3', title: 'Planning of changes',
-              req: 'Changes shall be carried out in a planned manner. Consider purpose and QMS integrity.',
-              tags: ['[Clinical] New Treatment Protocol Launch', '[Admin] Facility Expansion Plan', 'Impact Analysis Reports', 'Authorization Sign-offs'],
-              phrasing: ['Changes to clinical pathways are managed through formal impact analysis', 'Hospital QMS integrity was maintained during recent operational transitions', 'Unauthorized modifications to workflows observed without formal review'] },
-
+            { id: '6.1', title: 'Actions to address risks & opportunities', std: 'ISO 9001:2015', 
+              req: '6.1.1 Consider context and interested parties to: a) give assurance results; b) enhance desirable effects; c) prevent/reduce undesired effects; d) achieve improvement.\n6.1.2 Plan actions to address these and evaluate effectiveness.', 
+              tags: ['[Clinical] Patient Safety Risk Registry', '[Admin] Financial Risk Map', '[Unit] SWOT Analysis', 'Mitigation Plan Registry'], 
+              phrasing: ['Robust clinical risk management framework verified', 'Unit risk register is comprehensive and regularly updated', 'Departmental opportunities effectively identified'] },
+            { id: '6.2', title: 'Quality objectives and planning', std: 'ISO 9001:2015', 
+              req: '6.2.1 Establish quality objectives: consistent with policy, measurable, monitored, communicated, and updated.\n6.2.2 Determine: what, resources, who, when, and how evaluated.', 
+              tags: ['KPI Dashboard', 'Medical Outcome Metrics', 'TAT Admission Goals', 'KPI Review Minutes'], 
+              phrasing: ['Measurable objectives aligned with hospital quality policy', 'Personnel demonstrate high awareness of performance targets', 'Monthly monitoring of clinical KPIs verified'] },
+            { id: '6.3', title: 'Planning of changes', std: 'ISO 9001:2015', 
+              req: 'Changes shall be carried out in a planned manner considering purpose, consequences, QMS integrity, resources, and responsibilities.', 
+              tags: ['New Treatment Protocol Launch', 'Facility Expansion Plan', 'MOC Authorization Form'], 
+              phrasing: ['Protocol changes followed formal impact analysis', 'Hospital QMS integrity maintained during transition', 'Resource reallocation properly authorized'] },
+            
             { id: '7.0', title: 'SUPPORT', isHeader: true },
-            { id: '7.1.1', title: 'General Resources', std: 'ISO 9001:2015',
-              req: 'The hospital shall determine and provide resources for QMS.',
-              tags: ['[Clinical] Medical Equipment Budget', '[Admin] IT Infrastructure Assets', 'Annual Procurement Plan', 'Resource Gap Analysis'],
-              phrasing: ['Adequate resources provided to ensure continuity of clinical operations', 'Evidence suggests facility resource constraints impact service effectiveness', 'Provision of resources for continual improvement is verified as active'] },
-            { id: '7.1.2', title: 'People',
-              req: 'Provide persons necessary for effective implementation.',
-              tags: ['[Clinical] Nursing Staff Ratios', '[Admin] Roster & Attendance Logs', 'Manpower Inventory', 'Retention Strategy'],
-              phrasing: ['Clinical staffing levels meet established safety and operational criteria', 'Administrative headcount is appropriate for unit complexity', 'Personnel shortages identified in key support functions during sampling'] },
-            { id: '7.5', title: 'Documented information', std: 'ISO 9001:2015',
-              req: 'QMS shall include documented info required by ISO and the hospital.',
-              tags: ['[Unit] Master List of Controlled Forms', '[Unit] Form Approval/Control Records', '[Clinical] Patient Record Templates', 'Digital Archive Policy'],
-              phrasing: ['Utilization of controlled forms is verified as consistent across the unit', 'All unit-specific forms are formally approved and systematically controlled', 'Robust master list exists for all controlled documents and medical forms', 'Observed use of unauthorized form templates in the operational area'] },
-            { id: '7.5.1', title: 'General Documentation', isSub: true,
-              req: 'Include ISO requirements and info for effectiveness.',
-              tags: ['[Clinical] Medical Care Standards', '[Admin] Corporate Policy Manual', 'Document Registry', 'SOP Adherence Records'],
-              phrasing: ['Documentary requirements for clinical/admin paths are fully satisfied', 'Significant gaps noted in documentation required for service effectiveness', 'Internal controls effectively ensure availability of necessary info'] },
-            { id: '7.5.2', title: 'Creating and updating', isSub: true,
-              req: 'Ensure identification, format, and review/approval.',
-              tags: ['[Unit] Document Header Audit', '[Admin] Digital Filing Standards', 'Revision History Logs', 'Approval Signatures'],
-              phrasing: ['Standardized document identification and description are strictly maintained', 'Several document revisions lack formal approval sign-offs', 'Revision history is consistently maintained across unit records'] },
-            { id: '7.5.3', title: 'Control of documented information', isSub: true,
-              req: 'Ensure availability, protection, and control of retention.',
-              tags: ['[Clinical] HIPAA/Data Privacy Logs', '[Admin] Backup & Recovery Logs', 'Retention Schedule', 'Disposal Registry'],
-              phrasing: ['Sensitive clinical data is adequately protected from unauthorized access', 'Retention and disposition of unit records follow the corporate schedule', 'Evidence of uncontrolled document copies circulating in unit'] },
+            { id: '7.1.1', title: 'General Resources', std: 'ISO 9001:2015', 
+              req: 'Determine and provide resources needed for implementation, maintenance, and continual improvement of QMS.', 
+              tags: ['Annual Procurement Plan', 'IT Assets Inventory', 'Medical Equipment Budget'], 
+              phrasing: ['Adequate resources provided for operational continuity', 'Evidence of facility resource constraints noted'] },
+            { id: '7.1.2', title: 'People', std: 'ISO 9001:2015', 
+              req: 'Determine and provide persons necessary for effective implementation and operation of processes.', 
+              tags: ['Nursing Staff Ratios', 'Physician Roster', 'Admin Manpower Inventory'], 
+              phrasing: ['Clinical staffing levels meet safety benchmarks', 'Manpower inventory reflects current unit requirements'] },
+            { id: '7.1.5.1', title: 'Monitoring & Measuring Resources', std: 'ISO 9001:2015', 
+              req: 'Determine and provide resources needed for valid and reliable results. Ensure resources are suitable and maintained.', 
+              tags: ['Calibration Certificates', 'BP Apparatus Registry', 'Ventilator PM Logs'], 
+              phrasing: ['Measurement resources are fit for clinical purpose', 'Preventive maintenance schedule is strictly followed'] },
+            { id: '7.1.5.2', title: 'Measurement traceability', std: 'ISO 9001:2015', 
+              req: 'Calibrate/verify against traceable standards; identify status; safeguard from damage.', 
+              tags: ['Calibration Stickers', 'Standard Traceability Docs', 'Instrument Registry'], 
+              phrasing: ['Instrument calibration is current and traceable', 'Clear identification of equipment calibration status'] },
+            { id: '7.1.6', title: 'Organizational/Unit Knowledge', std: 'ISO 9001:2015', 
+              req: 'Determine knowledge necessary for operation and to achieve conformity.', 
+              tags: ['Clinical Practice Guidelines', 'Unit Knowledge Base', 'Best Practice Manuals'], 
+              phrasing: ['Unit-specific expertise effectively maintained and accessible', 'Process knowledge successfully transferred to new staff'] },
+            { id: '7.2', title: 'Competence', std: 'ISO 9001:2015', 
+              req: 'Determine necessary competence, ensure persons are competent (education, training, exp), take action to acquire competence, retain evidence.', 
+              tags: ['HR 201 Files', 'PRC License Log', 'Credentialing & Privileging', 'Training Certs'], 
+              phrasing: ['Staff competence verified via license and experience logs', 'Specialized training successfully addresses performance gaps'] },
+            { id: '7.3', title: 'Awareness', std: 'ISO 9001:2015', 
+              req: 'Ensure persons are aware of quality policy, objectives, contribution to effectiveness, and implications of nonconformity.', 
+              tags: ['Staff Orientation Log', 'Quality Policy Display', 'Awareness Interview'], 
+              phrasing: ['Personnel understand the benefits of QMS compliance', 'Awareness of individual impact on patient safety confirmed'] },
+            { id: '7.4', title: 'Communication', std: 'ISO 9001:2015', 
+              req: 'Determine internal/external communications: what, when, with whom, how, and who.', 
+              tags: ['Internal Comms Matrix', 'Stakeholder Meeting Minutes', 'Patient Info Board'], 
+              phrasing: ['Inter-departmental communication is clear and documented', 'Patient communication protocols are effectively implemented'] },
+            { id: '7.5', title: 'Documented Information', std: 'ISO 9001:2015', 
+              req: '7.5.1 Include required info. 7.5.2 identification, format, approval. 7.5.3 availability, protection, distribution, storage, changes, retention.', 
+              tags: ['Master List of Docs', 'Record Retention Schedule', 'Controlled Forms Registry'], 
+              phrasing: ['Document control process is robust and systematically followed', 'Record retention follows hospital and legal requirements'] },
 
             { id: '8.0', title: 'OPERATION', isHeader: true },
-            { id: '8.1', title: 'Operational planning and control', std: 'ISO 9001:2015',
-              req: 'Plan/implement processes needed for provision of services.',
-              tags: ['[Clinical] Triage Workflow', '[Admin] Service Order Workflow', 'Acceptance Criteria', 'Work Instructions (WI)'],
-              phrasing: ['Operational controls are effectively established and recorded per criteria', 'Clinical process deviations observed versus established triage protocols', 'Control plans are directly derived from risk planning actions'] },
-            { id: '8.5', title: 'Production and Service Provision', std: 'ISO 9001:2015',
-              req: 'Hospital shall implement service provision under controlled conditions.',
-              tags: ['[Clinical] Patient Care Pathways', '[Admin] Facility Maintenance Logs', 'Operational SOPs', 'Personnel Authority Logs'],
-              phrasing: ['Service provision is governed by strictly controlled operating procedures', 'Administrative support activities maintained under verified conditions', 'Operational staff demonstrate high adherence to service criteria'] },
-            { id: '8.5.1', title: 'Control of Provision', isSub: true,
-              req: 'Implement under controlled conditions.',
-              tags: ['[Clinical] Sterilization/OR Logs', '[Admin] IT Uptime Reports', 'Daily Operational Checklists', 'Equipment PM Logs'],
-              phrasing: ['All clinical services provided under verified and recorded conditions', 'Incomplete operational logs noted during administrative support audit', 'Preventive maintenance for critical equipment is current and logged'] },
-            { id: '8.5.2', title: 'Identification and Traceability', isSub: true,
-              req: 'Maintain appropriate identification.',
-              tags: ['[Clinical] Patient ID wristbands', '[Admin] Document Barcoding', 'Unique ID Logs', 'Chain of Custody records'],
-              phrasing: ['Patient identification and traceability are continuous and verified', 'Administrative file traceability maintained through unique barcoding/ID', 'Traceability markers found missing from several clinical specimens'] },
-            { id: '8.6', title: 'Release of Products/Services',
-              req: 'Complete arrangements satisfactorily before release.',
-              tags: ['[Clinical] Discharge Clearance', '[Admin] Final Billing QA', 'Authorized Sign-off', 'Criteria Compliance Report'],
-              phrasing: ['Verification of final release criteria confirmed prior to discharge/release', 'Evidence of service release prior to completion of final verification', 'Release of unit services performed exclusively by authorized personnel'] },
-            { id: '8.7', title: 'Control of Non-conforming Outputs',
-              req: 'Identify and control to prevent unintended use.',
-              tags: ['[Clinical] Adverse Event Registry', '[Admin] Billing Discrepancy Log', 'NCR Registry', 'Quarantine/Segregation'],
-              phrasing: ['Non-conforming outputs are clearly identified and segregated from use', 'Absence of formal mechanism for controlling non-conforming services', 'Disposition of non-conforming items is thoroughly documented'] },
+            { id: '8.1', title: 'Operational Planning and Control', std: 'ISO 9001:2015', 
+              req: 'Determine requirements, establish criteria, resources, implement control, and retain documented info.', 
+              tags: ['Triage Workflow', 'Operational SOPs', 'Acceptance Criteria Log'], 
+              phrasing: ['Clinical workflows governed by controlled procedures', 'Acceptance criteria for services clearly defined'] },
+            { id: '8.5', title: 'Production and Service Provision', std: 'ISO 9001:2015', 
+              req: '8.5.1 Implement under controlled conditions. 8.5.2 Maintain Identification & Traceability.', 
+              tags: ['OR/ER Operational Logs', 'Patient ID Wristbands', 'Lab Sample Barcodes'], 
+              phrasing: ['Service provision conducted under verified controls', 'Continuous patient traceability confirmed across units'] },
+            { id: '8.6', title: 'Release of Products/Services', std: 'ISO 9001:2015', 
+              req: 'Verify requirements have been met before release.', 
+              tags: ['Discharge Summary Clearance', 'Authorized Release Sign-off'], 
+              phrasing: ['Release criteria verified prior to patient discharge', 'Verification records confirm fulfillment of service requirements'] },
+            { id: '8.7', title: 'Control of Nonconforming Outputs', std: 'ISO 9001:2015', 
+              req: 'Identify and control to prevent unintended use.', 
+              tags: ['Incident/Error Logs', 'NCR Registry', 'Segregation Protocol'], 
+              phrasing: ['Nonconforming clinical services identified and logged', 'Disposition of errors is documented and approved'] },
 
             { id: '9.0', title: 'PERFORMANCE EVALUATION', isHeader: true },
-            { id: '9.1.2', title: 'Customer satisfaction', isSub: true,
-              req: 'Monitor perceptions of fulfilled needs.',
-              tags: ['[Clinical] Patient Experience Survey', '[Admin] Stakeholder Feedback', 'Complaint Logs', 'Satisfaction Analysis'],
-              phrasing: ['Patient experience and satisfaction monitoring systems are active', 'Satisfaction monitoring lacks statistically significant sample sizes', 'Complaint resolution timelines are consistently adhered to by the unit'] },
-            { id: '9.2', title: 'Internal Audit', std: 'ISO 9001:2015',
-              req: 'Conducted at planned intervals.',
-              tags: ['[Unit] Internal Audit Schedule', 'Audit Findings Summary', 'Auditor Competency', 'CAR Status Log'],
-              phrasing: ['Unit internal audit program executed per established schedule', 'Audit findings reported to management for timely review and action', 'Internal auditors demonstrate competency and maintain objectivity'] },
+            { id: '9.1.1', title: 'Monitoring & Measurement', std: 'ISO 9001:2015', 
+              req: 'Determine what to monitor, methods, analysis timing, and evaluation timing.', 
+              tags: ['M&E Plan', 'Unit Performance Data', 'Monthly Data Logs'], 
+              phrasing: ['Monitoring frequency ensures reliable performance data', 'Measurement methods are appropriate for clinical metrics'] },
+            { id: '9.1.2', title: 'Customer Satisfaction', std: 'ISO 9001:2015', 
+              req: 'Monitor perceptions of needs/expectations fulfillment. Determine methods.', 
+              tags: ['Patient Satisfaction Survey', 'Stakeholder Feedback Log', 'Net Promoter Score'], 
+              phrasing: ['Patient perception data actively used for improvement', 'Formal system for feedback analysis is operational'] },
+            { id: '9.1.3', title: 'Analysis and Evaluation', std: 'ISO 9001:2015', 
+              req: 'Evaluate conformity, satisfaction, performance, planning effectiveness, risks/ops, external providers, need for improvement.', 
+              tags: ['Statistical Analysis Report', 'Trend Analysis Charts', 'Root Cause Logs'], 
+              phrasing: ['Data trends effectively used for strategic planning', 'Statistical techniques applied to clinical performance data'] },
 
             { id: '10.0', title: 'IMPROVEMENT', isHeader: true },
-            { id: '10.2', title: 'NC & Corrective Action', std: 'ISO 9001:2015',
-              req: 'Reaction to NC/complaints, evaluate root cause.',
-              tags: ['[Clinical] Sentinel Event RCA', '[Admin] CAR Management Log', 'Effectiveness Evidence', 'Resolution Records'],
-              phrasing: ['Corrective actions effectively address systemic root causes of issues', 'Recurrence of NC noted due to inadequate root cause analysis (RCA)', 'Verification of effectiveness confirmed through rigorous objective evidence'] },
-            { id: '10.3', title: 'Continual improvement',
-              req: 'Improve suitability, adequacy and effectiveness of QMS.',
-              tags: ['[Clinical] QI Project Logs', '[Admin] Efficiency Trend Reports', 'Innovation Suggestions', 'CI Meeting Minutes'],
-              phrasing: ['Objective evidence confirms a culture of ongoing clinical optimization', 'Suitability of unit QMS enhanced via documented departmental initiatives', 'Improvements effectively tracked, analyzed, and reported to management'] }
+            { id: '10.2', title: 'NC & Corrective Action', std: 'ISO 9001:2015', 
+              req: 'Reaction to complaints, review complaints, update risks and opportunities, update risk levels.', 
+              tags: ['CAR Registry', 'Adverse Event RCA Report', 'Complaint Resolution Log'], 
+              phrasing: ['Corrective actions address systemic root causes', 'Verification of effectiveness confirmed through follow-up audit'] },
+            { id: '10.3', title: 'Continual Improvement', std: 'ISO 9001:2015', 
+              req: 'Improve suitability, adequacy and effectiveness. Samples of improvement of the unit: copy please.', 
+              tags: ['QI Project PDSA Portfolio', 'CI Suggestion Registry', 'Lean Six Sigma Projects', 'Efficiency Trend Reports'], 
+              phrasing: ['Unit demonstrates ongoing commitment to clinical optimization', 'Documented PDSA cycles result in significant process improvements', 'Culture of innovation verified through unit-led initiatives'] }
         ];
 
         const sessionStore = {};
+        let autoSaveTimeout = null;
 
         function init() {
             renderTable();
-            setInterval(() => {
-                const tl = document.getElementById('teamLeader')?.value || '';
-                const au = document.getElementById('auditee')?.value || '';
-                if(document.getElementById('printLeaderName')) document.getElementById('printLeaderName').innerText = tl;
-                if(document.getElementById('printAuditeeName')) document.getElementById('printAuditeeName').innerText = au;
-            }, 1000);
+            document.getElementById('auditee').addEventListener('input', (e) => {
+                document.getElementById('printAuditeeLabel').innerText = e.target.value || "____________________";
+            });
         }
 
         function renderTable() {
@@ -286,35 +291,69 @@
                 const tr = document.createElement('tr');
                 if (item.isHeader) {
                     tr.className = "clause-group";
-                    tr.innerHTML = `<td class="border border-black p-2 text-center font-bold">STANDARDS</td><td class="border border-black p-2" colspan="8">${item.title}</td>`;
+                    tr.innerHTML = `
+                        <td class="border border-black p-2 text-center font-bold">SECTION</td>
+                        <td class="border border-black p-2" colspan="8">${item.title}</td>
+                    `;
                 } else {
                     const cleanId = item.id.replace(/\./g, '_');
                     sessionStore[cleanId] = { finding: null, evidence: '', feedback: '' };
                     tr.innerHTML = `
                         <td class="border border-black p-2 text-center font-bold text-[10px] uppercase">${item.std || ''}</td>
-                        <td class="border border-black p-2 ${item.isSub ? 'sub-clause' : 'font-bold'}">${item.id} ${item.title}<span class="requirement-text">${item.req || ''}</span></td>
+                        <td class="border border-black p-2 ${item.isSub ? 'sub-clause' : 'font-bold'}">
+                            ${item.id} ${item.title}
+                            <span class="requirement-text">${item.req || ''}</span>
+                        </td>
                         <td class="border border-black checkbox-cell" onclick="setFinding('${cleanId}', 'C', this)"></td>
                         <td class="border border-black checkbox-cell" onclick="setFinding('${cleanId}', 'MJ', this)"></td>
                         <td class="border border-black checkbox-cell" onclick="setFinding('${cleanId}', 'MN', this)"></td>
                         <td class="border border-black checkbox-cell" onclick="setFinding('${cleanId}', 'O', this)"></td>
                         <td class="border border-black checkbox-cell" onclick="setFinding('${cleanId}', 'OFI', this)"></td>
                         <td class="border border-black p-2 align-top relative">
-                            <textarea id="ev_${cleanId}" oninput="validateEv('${cleanId}', this.value)"></textarea>
+                            <textarea id="ev_${cleanId}" oninput="validateEv('${cleanId}', this.value); triggerAutoSave()"></textarea>
                             <div class="guidance-box no-print">
-                                <span class="guidance-label">Evidence Checklist:</span>
+                                <span class="guidance-label">Evidence Options:</span>
                                 ${(item.tags || []).map(t => `<span class="tag" onclick="insertText('ev_${cleanId}', '${t}', '${cleanId}', 'evidence')">${t}</span>`).join('')}
                             </div>
                         </td>
                         <td class="border border-black p-2 align-top">
-                            <textarea id="fb_${cleanId}" oninput="syncVal('${cleanId}', 'feedback', this.value)"></textarea>
+                            <textarea id="fb_${cleanId}" oninput="syncVal('${cleanId}', 'feedback', this.value); triggerAutoSave()"></textarea>
                             <div class="guidance-box no-print">
-                                <span class="guidance-label">Professional Phrases:</span>
+                                <span class="guidance-label">Quick Phrases:</span>
                                 ${(item.phrasing || []).map(r => `<span class="tag tag-result" onclick="insertText('fb_${cleanId}', '${r}', '${cleanId}', 'feedback')">${r}</span>`).join('')}
                             </div>
-                        </td>`;
+                        </td>
+                    `;
                 }
                 body.appendChild(tr);
             });
+        }
+
+        window.triggerAutoSave = () => {
+            updateSyncStatus('pending');
+            clearTimeout(autoSaveTimeout);
+            autoSaveTimeout = setTimeout(() => {
+                saveToSheet(true); // silent sync
+            }, 3000); // Save 3 seconds after last input
+        };
+
+        function updateSyncStatus(state, msg = '') {
+            const dot = document.getElementById('syncDot');
+            const txt = document.getElementById('syncText');
+            
+            if(state === 'pending') {
+                dot.className = "w-2 h-2 rounded-full bg-amber-500 sync-pulse";
+                txt.innerText = "Changes pending...";
+            } else if (state === 'syncing') {
+                dot.className = "w-2 h-2 rounded-full bg-blue-500 sync-pulse";
+                txt.innerText = "Syncing live...";
+            } else if (state === 'success') {
+                dot.className = "w-2 h-2 rounded-full bg-emerald-500";
+                txt.innerText = "Synced at " + new Date().toLocaleTimeString();
+            } else if (state === 'error') {
+                dot.className = "w-2 h-2 rounded-full bg-red-500";
+                txt.innerText = "Sync Error - Check Connection";
+            }
         }
 
         window.insertText = (targetId, text, id, field) => {
@@ -323,6 +362,7 @@
             area.value += prefix + text;
             if (field === 'evidence') validateEv(id, area.value); else syncVal(id, field, area.value);
             area.focus();
+            triggerAutoSave();
         };
 
         window.validateEv = (id, val) => {
@@ -333,7 +373,10 @@
 
         window.setFinding = (id, val, el) => {
             const row = el.parentElement;
-            row.querySelectorAll('.checkbox-cell').forEach(c => { c.innerText = ''; c.classList.remove('selected-c', 'selected-nc', 'selected-o', 'selected-ofi'); });
+            row.querySelectorAll('.checkbox-cell').forEach(c => { 
+                c.innerText = ''; 
+                c.classList.remove('selected-c', 'selected-nc', 'selected-o', 'selected-ofi'); 
+            });
             if (sessionStore[id].finding === val) {
                 sessionStore[id].finding = null;
                 document.getElementById('ev_'+id).classList.remove('evidence-missing');
@@ -347,6 +390,7 @@
                 validateEv(id, document.getElementById('ev_'+id).value);
             }
             updateSummary();
+            triggerAutoSave();
         };
 
         function updateSummary() {
@@ -367,54 +411,53 @@
 
         window.syncVal = (id, field, val) => sessionStore[id][field] = val;
 
-        window.saveToSheet = () => {
+        window.saveToSheet = async (isSilent = false) => {
             const btn = document.getElementById('saveBtn');
             const saveText = document.getElementById('saveText');
-            btn.disabled = true;
-            const originalText = saveText.innerText;
-            saveText.innerText = "Syncing...";
+            
+            if(!isSilent) {
+                btn.disabled = true;
+                saveText.innerText = "Syncing...";
+            }
+            
+            updateSyncStatus('syncing');
 
             const payload = {
-                meta: { date: document.getElementById('auditDate').value, no: document.getElementById('iqaNo').value, dept: document.getElementById('department').value, leader: document.getElementById('teamLeader').value, auditee: document.getElementById('auditee').value, summary: document.getElementById('overallSummary').value },
-                totals: { C: document.getElementById('summary-c').innerText, MJ: document.getElementById('summary-mj').innerText, MN: document.getElementById('summary-mn').innerText, O: document.getElementById('summary-o').innerText, OFI: document.getElementById('summary-ofi').innerText },
+                meta: { 
+                    date: document.getElementById('auditDate').value, 
+                    no: document.getElementById('iqaNo').value, 
+                    dept: document.getElementById('department').value, 
+                    leader: "MC REYAN ANONUEVO RN MM", 
+                    auditee: document.getElementById('auditee').value, 
+                    summary: document.getElementById('overallSummary').value 
+                },
+                totals: { 
+                    C: document.getElementById('summary-c').innerText, 
+                    MJ: document.getElementById('summary-mj').innerText, 
+                    MN: document.getElementById('summary-mn').innerText, 
+                    O: document.getElementById('summary-o').innerText, 
+                    OFI: document.getElementById('summary-ofi').innerText 
+                },
                 findings: sessionStore
             };
 
-            // Attempt native Google Apps Script sync first
-            if (typeof google !== 'undefined' && google.script && google.script.run) {
-                google.script.run
-                  .withSuccessHandler(() => { 
-                      alert("Audit data successfully synced to Google Sheet via GAS!"); 
-                      btn.disabled = false; 
-                      saveText.innerText = originalText; 
-                  })
-                  .withFailureHandler(err => { 
-                      alert("GAS Error: " + err); 
-                      btn.disabled = false; 
-                      saveText.innerText = originalText; 
-                  })
-                  .processAuditData(payload);
-            } 
-            // Fallback to direct fetch for external preview
-            else {
-                fetch(WEB_APP_URL, {
+            try {
+                await fetch(WEB_APP_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // Standard for cross-domain GAS POSTs
+                    mode: 'no-cors',
                     cache: 'no-cache',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
-                })
-                .then(() => {
-                    alert("Sync signal sent to Google Web App URL. Check your sheet for new entries.");
-                    btn.disabled = false;
-                    saveText.innerText = originalText;
-                })
-                .catch(err => {
-                    console.error("Fetch Error:", err);
-                    alert("Fetch failed. Ensure the Web App URL is correct and deployed as 'Anyone'.");
-                    btn.disabled = false;
-                    saveText.innerText = originalText;
                 });
+                updateSyncStatus('success');
+            } catch (err) {
+                console.error("Save Error:", err);
+                updateSyncStatus('error');
+            } finally {
+                if(!isSilent) {
+                    btn.disabled = false;
+                    saveText.innerText = "Force Sync Now";
+                }
             }
         };
 
