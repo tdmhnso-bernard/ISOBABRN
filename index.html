@@ -165,6 +165,8 @@
     </div>
 
     <script>
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx9EMRd93cqPZO-1WNeZphg3594UZLFEMQI4t-BK5ki2ulVMq_THHehEtivcksayphwyg/exec";
+
         const ISO_DATA = [
             { id: '6.0', title: 'PLANNING', isHeader: true },
             { id: '6.1', title: 'Actions to address risks and opportunities', std: 'ISO 9001:2015',
@@ -378,24 +380,41 @@
                 findings: sessionStore
             };
 
+            // Attempt native Google Apps Script sync first
             if (typeof google !== 'undefined' && google.script && google.script.run) {
                 google.script.run
                   .withSuccessHandler(() => { 
-                      alert("Audit data successfully synced to Google Sheet!"); 
+                      alert("Audit data successfully synced to Google Sheet via GAS!"); 
                       btn.disabled = false; 
                       saveText.innerText = originalText; 
                   })
                   .withFailureHandler(err => { 
-                      alert("Error: " + err); 
+                      alert("GAS Error: " + err); 
                       btn.disabled = false; 
                       saveText.innerText = originalText; 
                   })
                   .processAuditData(payload);
-            } else {
-                console.log("Payload:", payload);
-                alert("Running in preview mode - Check console for JSON payload. Integration requires Google Apps Script environment.");
-                btn.disabled = false;
-                saveText.innerText = originalText;
+            } 
+            // Fallback to direct fetch for external preview
+            else {
+                fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Standard for cross-domain GAS POSTs
+                    cache: 'no-cache',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+                .then(() => {
+                    alert("Sync signal sent to Google Web App URL. Check your sheet for new entries.");
+                    btn.disabled = false;
+                    saveText.innerText = originalText;
+                })
+                .catch(err => {
+                    console.error("Fetch Error:", err);
+                    alert("Fetch failed. Ensure the Web App URL is correct and deployed as 'Anyone'.");
+                    btn.disabled = false;
+                    saveText.innerText = originalText;
+                });
             }
         };
 
