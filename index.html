@@ -14,15 +14,21 @@
         /* LANDSCAPE PRINT OPTIMIZATION */
         @page { 
             size: landscape; 
-            margin: 0.8cm; 
+            margin: 1cm; 
         }
         
         @media print {
             .no-print { display: none !important; }
             body { background: white; padding: 0; margin: 0; }
             .print-container { width: 100%; border: none; box-shadow: none; margin: 0; padding: 0; }
+            
+            /* OCD Fix: Prevent table rows from splitting across pages */
+            tr { page-break-inside: avoid; }
+            thead { display: table-header-group; }
+            
             table { border-collapse: collapse; width: 100%; table-layout: fixed; border: 1.5px solid black !important; }
             th, td { border: 1.1px solid black !important; padding: 4px !important; font-size: 8pt; word-wrap: break-word; vertical-align: top; }
+            
             textarea { border: none !important; height: auto !important; overflow: visible !important; min-height: 20px !important; }
             .checkbox-cell { width: 30px !important; font-size: 12pt !important; text-align: center !important; font-weight: bold; }
             .guidance-box { display: none !important; }
@@ -30,14 +36,18 @@
             input[type="text"] { border: none !important; }
             .clause-group { background-color: #f1f5f9 !important; -webkit-print-color-adjust: exact; }
             
-            /* Persistent Footnote on every page */
+            /* Persistent Footnote FIX: Anchored to absolute bottom right */
             .print-footer {
                 display: block !important;
                 position: fixed;
-                bottom: -20px;
+                bottom: 0;
                 right: 0;
-                font-size: 8pt;
+                font-size: 7pt;
                 font-weight: bold;
+                text-align: right;
+                width: 100%;
+                padding-top: 5px;
+                background: white;
             }
         }
         
@@ -201,7 +211,7 @@
             </div>
         </div>
         
-        <!-- Persistent Print Footnote -->
+        <!-- Persistent Print Footnote - OCD FIX -->
         <div class="print-footer">
             TDMH-QC-F-003-03-Φ
         </div>
@@ -214,95 +224,95 @@
         const ISO_DATA = [
             { id: '6.0', title: 'PLANNING', isHeader: true },
             { id: '6.1', title: 'Actions to address risks & opportunities', std: 'ISO 9001:2015', 
-              req: '6.1.1 Consider context and interested parties to: a) give assurance results; b) enhance desirable effects; c) prevent/reduce undesired effects; d) achieve improvement.\n6.1.2 Plan actions to address these and evaluate effectiveness.', 
+              req: '6.1.1 Consider context and interested parties to determine risks/opportunities to: a) give assurance results; b) enhance desirable effects; c) prevent/reduce undesired effects; d) achieve improvement.\n6.1.2 Plan: a) actions to address these; b) evaluate effectiveness.', 
               tags: ['[Clinical] Patient Safety Risk Registry', '[Admin] Financial Risk Map', '[Unit] SWOT Analysis', 'Mitigation Plan Registry'], 
               phrasing: ['Robust clinical risk management framework verified', 'Unit risk register is comprehensive and regularly updated', 'Departmental opportunities effectively identified'] },
             { id: '6.2', title: 'Quality objectives and planning', std: 'ISO 9001:2015', 
-              req: '6.2.1 Establish quality objectives: consistent with policy, measurable, monitored, communicated, and updated.\n6.2.2 Determine: what, resources, who, when, and how evaluated.', 
+              req: '6.2.1 Establish measurable quality objectives consistent with policy, monitored, and updated.\n6.2.2 Determine: what, resources, who, when, and how evaluated.\n*Maintain documented info on objectives.', 
               tags: ['KPI Dashboard', 'Medical Outcome Metrics', 'TAT Admission Goals', 'KPI Review Minutes'], 
               phrasing: ['Measurable objectives aligned with hospital quality policy', 'Personnel demonstrate high awareness of performance targets', 'Monthly monitoring of clinical KPIs verified'] },
             { id: '6.3', title: 'Planning of changes', std: 'ISO 9001:2015', 
-              req: 'Changes shall be carried out in a planned manner considering purpose, consequences, QMS integrity, resources, and responsibilities.', 
+              req: 'Changes shall be carried out in a planned manner considering: a) purpose and consequences; b) QMS integrity; c) resources; d) responsibility allocation.', 
               tags: ['New Treatment Protocol Launch', 'Facility Expansion Plan', 'MOC Authorization Form'], 
               phrasing: ['Protocol changes followed formal impact analysis', 'Hospital QMS integrity maintained during transition', 'Resource reallocation properly authorized'] },
             
             { id: '7.0', title: 'SUPPORT', isHeader: true },
             { id: '7.1.1', title: 'General Resources', std: 'ISO 9001:2015', 
-              req: 'Determine and provide resources needed for implementation, maintenance, and continual improvement of QMS.', 
+              req: 'Determine and provide resources needed for establishment, implementation, maintenance, and continual improvement of the QMS.', 
               tags: ['Annual Procurement Plan', 'IT Assets Inventory', 'Medical Equipment Budget'], 
               phrasing: ['Adequate resources provided for operational continuity', 'Evidence of facility resource constraints noted'] },
             { id: '7.1.2', title: 'People', std: 'ISO 9001:2015', 
-              req: 'Determine and provide persons necessary for effective implementation and operation of processes.', 
+              req: 'Determine and provide the persons necessary for effective implementation and operation of processes.', 
               tags: ['Nursing Staff Ratios', 'Physician Roster', 'Admin Manpower Inventory'], 
               phrasing: ['Clinical staffing levels meet safety benchmarks', 'Manpower inventory reflects current unit requirements'] },
             { id: '7.1.5.1', title: 'Monitoring & Measuring Resources', std: 'ISO 9001:2015', 
-              req: 'Determine and provide resources needed for valid and reliable results. Ensure resources are suitable and maintained.', 
+              req: 'Determine resources for valid results. Ensure resources are: a) suitable for specific monitoring type; b) maintained for continuing fitness.', 
               tags: ['Calibration Certificates', 'BP Apparatus Registry', 'Ventilator PM Logs'], 
               phrasing: ['Measurement resources are fit for clinical purpose', 'Preventive maintenance schedule is strictly followed'] },
             { id: '7.1.5.2', title: 'Measurement traceability', std: 'ISO 9001:2015', 
-              req: 'Calibrate/verify against traceable standards; identify status; safeguard from damage.', 
+              req: 'Measuring equipment shall be: a) calibrated/verified against traceable standards; b) identified for status; c) safeguarded from damage.\n*Determine validity of previous results if unfit.', 
               tags: ['Calibration Stickers', 'Standard Traceability Docs', 'Instrument Registry'], 
               phrasing: ['Instrument calibration is current and traceable', 'Clear identification of equipment calibration status'] },
             { id: '7.1.6', title: 'Organizational/Unit Knowledge', std: 'ISO 9001:2015', 
-              req: 'Determine knowledge necessary for operation and to achieve conformity.', 
+              req: 'Determine the knowledge necessary for process operation and to achieve conformity of products and services.', 
               tags: ['Clinical Practice Guidelines', 'Unit Knowledge Base', 'Best Practice Manuals'], 
               phrasing: ['Unit-specific expertise effectively maintained and accessible', 'Process knowledge successfully transferred to new staff'] },
             { id: '7.2', title: 'Competence', std: 'ISO 9001:2015', 
-              req: 'Determine necessary competence, ensure persons are competent (education, training, exp), take action to acquire competence, retain evidence.', 
+              req: 'a) determine competence; b) ensure persons are competent (edu, training, exp); c) take actions to acquire; d) retain documented evidence.', 
               tags: ['HR 201 Files', 'PRC License Log', 'Credentialing & Privileging', 'Training Certs'], 
               phrasing: ['Staff competence verified via license and experience logs', 'Specialized training successfully addresses performance gaps'] },
             { id: '7.3', title: 'Awareness', std: 'ISO 9001:2015', 
-              req: 'Ensure persons are aware of quality policy, objectives, contribution to effectiveness, and implications of nonconformity.', 
+              req: 'Ensure awareness of: a) policy; b) objectives; c) QMS contribution; d) implications of nonconformity.', 
               tags: ['Staff Orientation Log', 'Quality Policy Display', 'Awareness Interview'], 
               phrasing: ['Personnel understand the benefits of QMS compliance', 'Awareness of individual impact on patient safety confirmed'] },
             { id: '7.4', title: 'Communication', std: 'ISO 9001:2015', 
-              req: 'Determine internal/external communications: what, when, with whom, how, and who.', 
+              req: 'Determine: a) what; b) when; c) with whom; d) how; e) who communicates.', 
               tags: ['Internal Comms Matrix', 'Stakeholder Meeting Minutes', 'Patient Info Board'], 
               phrasing: ['Inter-departmental communication is clear and documented', 'Patient communication protocols are effectively implemented'] },
             { id: '7.5', title: 'Documented Information', std: 'ISO 9001:2015', 
-              req: '7.5.1 Include required info. 7.5.2 identification, format, approval. 7.5.3 availability, protection, distribution, storage, changes, retention.', 
+              req: '7.5.1 Include required info. 7.5.2 Ensure identification, description, format, review. 7.5.3 Control distribution, access, storage, changes, and retention.', 
               tags: ['Master List of Docs', 'Record Retention Schedule', 'Controlled Forms Registry'], 
               phrasing: ['Document control process is robust and systematically followed', 'Record retention follows hospital and legal requirements'] },
 
             { id: '8.0', title: 'OPERATION', isHeader: true },
             { id: '8.1', title: 'Operational Planning and Control', std: 'ISO 9001:2015', 
-              req: 'Determine requirements, establish criteria, resources, implement control, and retain documented info.', 
+              req: 'a) determine requirements; b) establish criteria for processes/acceptance; c) resources; d) implement control; e) maintain documented info.', 
               tags: ['Triage Workflow', 'Operational SOPs', 'Acceptance Criteria Log'], 
               phrasing: ['Clinical workflows governed by controlled procedures', 'Acceptance criteria for services clearly defined'] },
             { id: '8.5', title: 'Production and Service Provision', std: 'ISO 9001:2015', 
-              req: '8.5.1 Implement under controlled conditions. 8.5.2 Maintain Identification & Traceability.', 
+              req: '8.5.1 Implement under controlled conditions.\n8.5.2 Identification and Traceability throughout.', 
               tags: ['OR/ER Operational Logs', 'Patient ID Wristbands', 'Lab Sample Barcodes'], 
               phrasing: ['Service provision conducted under verified controls', 'Continuous patient traceability confirmed across units'] },
             { id: '8.6', title: 'Release of Products/Services', std: 'ISO 9001:2015', 
-              req: 'Verify requirements have been met before release.', 
+              req: 'Verify requirements met before release. Retain info on conformity and traceability to authorizer.', 
               tags: ['Discharge Summary Clearance', 'Authorized Release Sign-off'], 
               phrasing: ['Release criteria verified prior to patient discharge', 'Verification records confirm fulfillment of service requirements'] },
             { id: '8.7', title: 'Control of Nonconforming Outputs', std: 'ISO 9001:2015', 
-              req: 'Identify and control to prevent unintended use.', 
+              req: 'Identify and control nonconforming outputs to prevent unintended use. Take action based on nature of NC.', 
               tags: ['Incident/Error Logs', 'NCR Registry', 'Segregation Protocol'], 
               phrasing: ['Nonconforming clinical services identified and logged', 'Disposition of errors is documented and approved'] },
 
             { id: '9.0', title: 'PERFORMANCE EVALUATION', isHeader: true },
             { id: '9.1.1', title: 'Monitoring & Measurement', std: 'ISO 9001:2015', 
-              req: 'Determine what to monitor, methods, analysis timing, and evaluation timing.', 
+              req: 'Determine: a) what; b) methods; c) when performed; d) when analyzed.', 
               tags: ['M&E Plan', 'Unit Performance Data', 'Monthly Data Logs'], 
               phrasing: ['Monitoring frequency ensures reliable performance data', 'Measurement methods are appropriate for clinical metrics'] },
             { id: '9.1.2', title: 'Customer Satisfaction', std: 'ISO 9001:2015', 
-              req: 'Monitor perceptions of needs/expectations fulfillment. Determine methods.', 
+              req: 'Monitor perceptions of needs fulfillment. Determine methods for obtaining and reviewing feedback.', 
               tags: ['Patient Satisfaction Survey', 'Stakeholder Feedback Log', 'Net Promoter Score'], 
               phrasing: ['Patient perception data actively used for improvement', 'Formal system for feedback analysis is operational'] },
             { id: '9.1.3', title: 'Analysis and Evaluation', std: 'ISO 9001:2015', 
-              req: 'Evaluate conformity, satisfaction, performance, planning effectiveness, risks/ops, external providers, need for improvement.', 
+              req: 'Analyze for: a) conformity; b) satisfaction; c) performance; d) planning effectiveness; e) risks; f) providers; g) improvement needs.\n*Can include statistical techniques.', 
               tags: ['Statistical Analysis Report', 'Trend Analysis Charts', 'Root Cause Logs'], 
               phrasing: ['Data trends effectively used for strategic planning', 'Statistical techniques applied to clinical performance data'] },
 
             { id: '10.0', title: 'IMPROVEMENT', isHeader: true },
             { id: '10.2', title: 'NC & Corrective Action', std: 'ISO 9001:2015', 
-              req: 'Reaction to complaints, review complaints, update risks and opportunities, update risk levels.', 
+              req: 'React to complaints/NC: review, determine root causes, evaluate need for action, update risks/opportunities, evaluate effectiveness.', 
               tags: ['CAR Registry', 'Adverse Event RCA Report', 'Complaint Resolution Log'], 
               phrasing: ['Corrective actions address systemic root causes', 'Verification of effectiveness confirmed through follow-up audit'] },
             { id: '10.3', title: 'Continual Improvement', std: 'ISO 9001:2015', 
-              req: 'Improve suitability, adequacy and effectiveness. Samples of improvement of the unit: copy please.', 
+              req: 'Improve suitability, adequacy and effectiveness of QMS. Analyze results to identify improvement needs. Samples of improvement of the unit: again COPY', 
               tags: ['QI Project PDSA Portfolio', 'CI Suggestion Registry', 'Lean Six Sigma Projects', 'Efficiency Trend Reports'], 
               phrasing: ['Unit demonstrates ongoing commitment to clinical optimization', 'Documented PDSA cycles result in significant process improvements', 'Culture of innovation verified through unit-led initiatives'] }
         ];
@@ -311,6 +321,18 @@
         let autoSaveTimeout = null;
 
         function init() {
+            // AUTOMATED DATE AND TIME - OCD Fix
+            const now = new Date();
+            const dateStr = now.toLocaleString('en-US', { 
+                month: 'short', 
+                day: '2-digit', 
+                year: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                hour12: true 
+            });
+            document.getElementById('auditDate').value = dateStr;
+
             renderTable();
             document.getElementById('auditee').addEventListener('input', (e) => {
                 document.getElementById('printAuditeeLabel').innerText = e.target.value || "____________________";
@@ -498,5 +520,5 @@
 
         document.addEventListener('DOMContentLoaded', init);
     </script>
-</body>
+</body> 
 </html>
