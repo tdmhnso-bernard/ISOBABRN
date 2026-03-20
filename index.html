@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CQI Internal Audit System - ISO 9001:2015</title>
+    <title>CQI Internal Audit System - Hospital ISO 9001:2015</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* LANDSCAPE PRINT OPTIMIZATION */
@@ -59,7 +59,7 @@
         <div class="bg-slate-900 text-white p-4 flex justify-between items-center no-print sticky top-0 z-50">
             <div class="flex items-center gap-4">
                 <div class="w-10 h-10 bg-indigo-600 rounded flex items-center justify-center font-black text-sm uppercase">CQI</div>
-                <h1 class="text-base font-bold uppercase tracking-widest">Internal Quality Audit System</h1>
+                <h1 class="text-base font-bold uppercase tracking-widest">Internal Quality Audit System - Hospital</h1>
             </div>
             <div class="flex gap-3">
                 <button onclick="window.print()" class="bg-slate-700 hover:bg-slate-600 px-5 py-2 rounded text-xs font-bold border border-slate-500 uppercase">Print Landscape</button>
@@ -145,7 +145,7 @@
                         <div class="p-2 border border-black text-center">O: <span id="summary-o">0</span></div>
                         <div class="p-2 border border-black text-center">OFI: <span id="summary-ofi">0</span></div>
                     </div>
-                    <textarea id="overallSummary" class="w-full h-32 p-3 border border-black text-sm" placeholder="Summarize overall audit conclusion..."></textarea>
+                    <textarea id="overallSummary" class="w-full h-32 p-3 border border-black text-sm" placeholder="Summarize overall hospital audit conclusion..."></textarea>
                 </div>
                 <div class="hidden print:block">
                      <h3 class="font-black text-sm uppercase mb-3 border-b-2 border-black">Authorization</h3>
@@ -156,7 +156,7 @@
                         </div>
                         <div class="flex-1 text-center border-t border-black pt-2">
                             <p class="font-bold uppercase text-[10px]" id="printAuditeeName"></p>
-                            <p class="text-[8px] italic">Auditee / Dept. Head</p>
+                            <p class="text-[8px] italic">Medical/Dept. Head</p>
                         </div>
                      </div>
                 </div>
@@ -169,104 +169,100 @@
             { id: '6.0', title: 'PLANNING', isHeader: true },
             { id: '6.1', title: 'Actions to address risks and opportunities', std: 'ISO 9001:2015',
               req: 'The organization shall determine the risks and opportunities that need to be addressed to: a) give assurance of results; b) enhance desirable effects; c) prevent undesired effects; d) achieve improvement.',
-              tags: ['Strategic Risk Register', 'SWOT/PESTEL Analysis Report', 'Opportunity Identification Log', 'Risk Management Framework Documentation'],
-              phrasing: ['Objective evidence confirms a robust risk management framework is in place', 'Comprehensive risk identification and mitigation strategies were verified', 'Systematic approach to capturing and evaluating opportunities for improvement', 'Risk treatment plans require alignment with the current organizational context'] },
+              tags: ['[Clinical] Patient Safety Risk Registry', '[Admin] Financial/Operational Risk Map', '[Unit] Opportunity Identification Log', 'Hospital-Wide Risk Framework'],
+              phrasing: ['Evidence confirms a robust hospital-wide risk management framework is active', 'Strategic clinical and non-clinical risk registers are well-maintained', 'Comprehensive risk identification and treatment plans were verified', 'Incomplete assessment of departmental opportunities noted'] },
             { id: '6.1.1', title: 'Determine risks and opportunities', isSub: true,
-              req: 'Organization shall consider context (4.1) and needs of interested parties (4.2) to determine risks/opportunities to:\na) give assurance; b) enhance effects; c) reduce undesired effects; d) achieve improvement',
-              tags: ['Policies and Procedures (Risk)', 'Unit-Level Risk Assessments', 'Interested Parties Expectations Matrix', 'Context Review Minutes'],
-              phrasing: ['Strategic risks were effectively identified through a rigorous context review', 'Mitigation plans have been effectively implemented at the operational unit level', 'No formal evidence of risk assessment was presented at the time of audit', 'Identification of interested parties\' needs is well-documented and utilized'] },
+              req: 'Organization shall consider context (4.1) and needs of interested parties (4.2) to determine risks/opportunities.',
+              tags: ['[Clinical] Infection Control Risks', '[Admin] Staffing Shortage Analysis', 'SWOT/PESTEL Analysis', 'Departmental Context Review'],
+              phrasing: ['Patient-centered risks are prioritized and integrated into unit assessments', 'Strategic hospital risks effectively identified through context review', 'No formal evidence of risk assessment was presented for review', 'Identification of interested parties\' needs is well-documented'] },
             { id: '6.1.2', title: 'Planning actions', isSub: true,
-              req: 'The organization shall plan: a) actions to address these risks and opportunities; b) evaluate the effectiveness of these actions.',
-              tags: ['Risk Treatment Action Plan', 'Management of Change (MOC) Logs', 'Effectiveness Evaluation Records', 'Review Meeting Minutes'],
-              phrasing: ['Planned actions directly address the identified high-impact root risks', 'Post-implementation evaluations confirm significant reduction in risk levels', 'Insufficient evidence to verify the periodic evaluation of action effectiveness', 'Risk treatment actions lack defined timelines for completion and review'] },
+              req: 'The organization shall plan: a) actions; b) evaluate effectiveness.',
+              tags: ['[Clinical] Clinical Audit Action Plans', '[Admin] MOC Authorization Records', 'Effectiveness Review Logs', 'Risk Treatment Action Plan'],
+              phrasing: ['Planned actions address systemic root causes of identified patient safety risks', 'Post-implementation evaluations confirm significant reduction in risk levels', 'Monitoring of action effectiveness is inconsistent across sampled units'] },
             { id: '6.2', title: 'Quality objectives and planning to achieve them', std: 'ISO 9001:2015',
-              req: 'Establish objectives at relevant functions, levels, and processes. Objectives shall be measurable and consistent with policy.',
-              tags: ['Master KPI Dashboard', 'Unit Performance Scorecards', 'Quality Policy Alignment Review', 'Strategic Goal Setting Records'],
-              phrasing: ['Quality objectives are well-defined, measurable, and SMART-compliant', 'Unit-level objectives are successfully communicated across all operational levels', 'Gaps were observed between the corporate quality policy and unit objectives', 'Evidence of objective-setting across all relevant functional levels was verified'] },
+              req: 'Establish objectives at relevant functions, levels, and processes.',
+              tags: ['[Clinical] Patient Outcome Metrics', '[Admin] TAT for Admissions/Billing', 'KPI Dashboards', 'Strategic Goal Setting'],
+              phrasing: ['Hospital quality objectives are measurable and aligned with clinical standards', 'Unit-level KPIs demonstrate alignment with the corporate quality policy', 'Objectives lack specific measurable targets for the current period'] },
             { id: '6.2.1', title: 'Establishment of Quality Objectives', isSub: true,
-              req: 'Establish quality objectives. Objectives shall be: a) consistent with policy; b) measurable; c) consider requirements; d) relevant; e) monitored; f) communicated; g) updated.',
-              tags: ['Documented Quality Objectives', 'Performance Target Review Sheets', 'Toolbox Meeting Minutes (Communication)', 'Unit-Level KPI Roster'],
-              phrasing: ['Measurable objectives are established and properly communicated to personnel', 'Performance targets require updating to reflect the current fiscal period', 'Objectives demonstrate a clear and direct alignment with the Quality Policy', 'Documented information regarding unit objectives is maintained and current'] },
-            { id: '6.2.2', title: 'Achieving Quality Objectives', isSub: true,
-              req: 'Determine: a) what will be done; b) resources; c) who responsible; d) when completed; e) how results evaluated.',
-              tags: ['Implementation Roadmap', 'Resource Allocation Matrix', 'KPI Progress Reports', 'Responsibility Matrix (RACI)'],
-              phrasing: ['Responsibilities and completion timelines are explicitly defined and tracked', 'Robust mechanisms are in place for the evaluation of objective achievement', 'Resource allocation gaps were noted for several critical unit objectives', 'Progress tracking against milestones is conducted on a systematic basis'] },
+              req: 'Objectives shall be: measurable, consistent with policy, monitored, and updated.',
+              tags: ['[Clinical] Mortality/Morbidity Goals', '[Admin] Billing Accuracy Targets', 'Staff Awareness orientation', 'KPI Review Minutes'],
+              phrasing: ['Personnel demonstrate awareness of established unit performance goals', 'Quality objectives are monitored through monthly departmental huddles', 'Administrative targets require updating to reflect current service capabilities'] },
             { id: '6.3', title: 'Planning of changes',
-              req: 'Changes shall be carried out in a planned manner. Consider: a) purpose; b) integrity of QMS; c) resources; d) responsibility allocation.',
-              tags: ['Change Control Log', 'Impact Analysis Reports', 'MOC Authorization Records', 'Post-Change QMS Integrity Review'],
-              phrasing: ['Process changes are documented and managed in a highly systematic manner', 'QMS integrity was successfully maintained during recent operational transitions', 'Unauthorized process modifications were observed without formal impact analysis', 'Allocation of responsibilities for planned changes is clearly documented'] },
+              req: 'Changes shall be carried out in a planned manner. Consider purpose and QMS integrity.',
+              tags: ['[Clinical] New Treatment Protocol Launch', '[Admin] Facility Expansion Plan', 'Impact Analysis Reports', 'Authorization Sign-offs'],
+              phrasing: ['Changes to clinical pathways are managed through formal impact analysis', 'Hospital QMS integrity was maintained during recent operational transitions', 'Unauthorized modifications to workflows observed without formal review'] },
 
             { id: '7.0', title: 'SUPPORT', isHeader: true },
             { id: '7.1.1', title: 'General Resources', std: 'ISO 9001:2015',
-              req: 'Determine and provide resources for establishment, implementation, maintenance, and continual improvement of the QMS.',
-              tags: ['Budget Approval Records', 'Infrastructure Audit Summary', 'Procurement Strategy Documents', 'Resource Gap Analysis'],
-              phrasing: ['Adequate resources are provided to ensure the continuity of QMS operations', 'Evidence suggests resource constraints are impacting operational effectiveness', 'Infrastructure maintenance requirements are determined based on process needs', 'Provision of resources for continual improvement is verified and active'] },
+              req: 'The hospital shall determine and provide resources for QMS.',
+              tags: ['[Clinical] Medical Equipment Budget', '[Admin] IT Infrastructure Assets', 'Annual Procurement Plan', 'Resource Gap Analysis'],
+              phrasing: ['Adequate resources provided to ensure continuity of clinical operations', 'Evidence suggests facility resource constraints impact service effectiveness', 'Provision of resources for continual improvement is verified as active'] },
             { id: '7.1.2', title: 'People',
-              req: 'Determine and provide the persons necessary for the effective implementation of its QMS.',
-              tags: ['Manpower Inventory/Staffing Plan', 'Operational Staffing Schedules', 'RACI Matrix', 'Competency-Based Staffing Review'],
-              phrasing: ['Staffing levels are sufficient to maintain effective process control', 'Personnel shortages were identified during peak operational sampling', 'Responsibility and authority for QMS tasks are clearly assigned to personnel', 'The determination of manpower needs is aligned with service delivery requirements'] },
+              req: 'Provide persons necessary for effective implementation.',
+              tags: ['[Clinical] Nursing Staff Ratios', '[Admin] Roster & Attendance Logs', 'Manpower Inventory', 'Retention Strategy'],
+              phrasing: ['Clinical staffing levels meet established safety and operational criteria', 'Administrative headcount is appropriate for unit complexity', 'Personnel shortages identified in key support functions during sampling'] },
             { id: '7.5', title: 'Documented information', std: 'ISO 9001:2015',
-              req: 'The QMS shall include documented information required by ISO 9001 and that determined as necessary by the organization.',
-              tags: ['Master List of Controlled Forms', 'Unit-Specific Form Approval Records', 'Document Control Procedure Adherence', 'Digital Archive Structure'],
-              phrasing: ['Utilization of controlled forms is verified as consistent across the unit', 'The unit has established a robust master list for all controlled documents', 'All unit forms are formally approved and systematically controlled before use', 'Observed use of unauthorized or obsolete form templates in the workspace'] },
+              req: 'QMS shall include documented info required by ISO and the hospital.',
+              tags: ['[Unit] Master List of Controlled Forms', '[Unit] Form Approval/Control Records', '[Clinical] Patient Record Templates', 'Digital Archive Policy'],
+              phrasing: ['Utilization of controlled forms is verified as consistent across the unit', 'All unit-specific forms are formally approved and systematically controlled', 'Robust master list exists for all controlled documents and medical forms', 'Observed use of unauthorized form templates in the operational area'] },
             { id: '7.5.1', title: 'General Documentation', isSub: true,
-              req: 'Include: a) required by ISO 9001; b) determined as necessary for effectiveness.',
-              tags: ['Quality Management Manual', 'Unit Standard Operating Procedures (SOPs)', 'Form Control Registry', 'ISO 9001 Document Checklist'],
-              phrasing: ['Documentary requirements are fully satisfied in accordance with the standard', 'Significant gaps were noted in the documentation required for process effectiveness', 'Internal controls effectively ensure the availability of necessary documentation', 'The scope of documented information is appropriate for unit complexity'] },
+              req: 'Include ISO requirements and info for effectiveness.',
+              tags: ['[Clinical] Medical Care Standards', '[Admin] Corporate Policy Manual', 'Document Registry', 'SOP Adherence Records'],
+              phrasing: ['Documentary requirements for clinical/admin paths are fully satisfied', 'Significant gaps noted in documentation required for service effectiveness', 'Internal controls effectively ensure availability of necessary info'] },
             { id: '7.5.2', title: 'Creating and updating', isSub: true,
-              req: 'Ensure appropriate: a) identification; b) format/media; c) review/approval.',
-              tags: ['Document Header/Identification Audit', 'Authorized Approval Records', 'Revision History Logs', 'Formatting Standards Guide'],
-              phrasing: ['Document identification and description standards are strictly maintained', 'Several document revisions lack the required formal approval and sign-off', 'Revision history is consistently updated to reflect changes in procedures', 'The format and media of documented information are suitable for use'] },
+              req: 'Ensure identification, format, and review/approval.',
+              tags: ['[Unit] Document Header Audit', '[Admin] Digital Filing Standards', 'Revision History Logs', 'Approval Signatures'],
+              phrasing: ['Standardized document identification and description are strictly maintained', 'Several document revisions lack formal approval sign-offs', 'Revision history is consistently maintained across unit records'] },
             { id: '7.5.3', title: 'Control of documented information', isSub: true,
-              req: 'Ensure availability, protection, and control of distribution, storage, changes, and retention.',
-              tags: ['Document Distribution Registry', 'Retention and Archiving Schedule', 'Disposal of Obsolete Records', 'Data Integrity/Access Logs'],
-              phrasing: ['Documented information is adequately protected from loss or improper use', 'Evidence of uncontrolled document copies circulating within the operational area', 'Retention and disposition of records follow the corporate archiving schedule', 'Distribution and access to sensitive documented information are tightly controlled'] },
+              req: 'Ensure availability, protection, and control of retention.',
+              tags: ['[Clinical] HIPAA/Data Privacy Logs', '[Admin] Backup & Recovery Logs', 'Retention Schedule', 'Disposal Registry'],
+              phrasing: ['Sensitive clinical data is adequately protected from unauthorized access', 'Retention and disposition of unit records follow the corporate schedule', 'Evidence of uncontrolled document copies circulating in unit'] },
 
             { id: '8.0', title: 'OPERATION', isHeader: true },
             { id: '8.1', title: 'Operational planning and control', std: 'ISO 9001:2015',
-              req: 'Plan, implement, and control processes to meet requirements.',
-              tags: ['Process Control Plan', 'Service Acceptance Criteria', 'Standardized Work Instructions (WI)', 'Planning/Verification Records'],
-              phrasing: ['Operational controls are effectively established, monitored, and recorded', 'Observed deviations from established process criteria during implementation', 'Control plans are directly derived from the planning actions in Clause 6.0', 'Documented information demonstrates conformity to service requirements'] },
+              req: 'Plan/implement processes needed for provision of services.',
+              tags: ['[Clinical] Triage Workflow', '[Admin] Service Order Workflow', 'Acceptance Criteria', 'Work Instructions (WI)'],
+              phrasing: ['Operational controls are effectively established and recorded per criteria', 'Clinical process deviations observed versus established triage protocols', 'Control plans are directly derived from risk planning actions'] },
             { id: '8.5', title: 'Production and Service Provision', std: 'ISO 9001:2015',
-              req: 'The organizational shall implement production and service provision under controlled conditions.',
-              tags: ['Service Delivery SOPs', 'Work Environment Monitoring Logs', 'Personnel Authority Records', 'Operational Process Logs'],
-              phrasing: ['Service provision is strictly governed by controlled operating procedures', 'Controlled conditions for service delivery are consistently maintained and verified', 'Gaps were noted in the monitoring of the work environment during service delivery', 'Operational staff demonstrate high adherence to the established service criteria'] },
+              req: 'Hospital shall implement service provision under controlled conditions.',
+              tags: ['[Clinical] Patient Care Pathways', '[Admin] Facility Maintenance Logs', 'Operational SOPs', 'Personnel Authority Logs'],
+              phrasing: ['Service provision is governed by strictly controlled operating procedures', 'Administrative support activities maintained under verified conditions', 'Operational staff demonstrate high adherence to service criteria'] },
             { id: '8.5.1', title: 'Control of Provision', isSub: true,
-              req: 'Implement provision under controlled conditions.',
-              tags: ['Daily Operational Checklists', 'Adherence to Controlled Procedures', 'Equipment Preventive Maintenance', 'Service Verification Logs'],
-              phrasing: ['All services are provided under verified and recorded controlled conditions', 'Operational logs were found to be incomplete or inaccurate during audit sampling', 'Procedural adherence is verified through consistent and timely record keeping', 'Preventive maintenance for critical operational equipment is current and logged'] },
+              req: 'Implement under controlled conditions.',
+              tags: ['[Clinical] Sterilization/OR Logs', '[Admin] IT Uptime Reports', 'Daily Operational Checklists', 'Equipment PM Logs'],
+              phrasing: ['All clinical services provided under verified and recorded conditions', 'Incomplete operational logs noted during administrative support audit', 'Preventive maintenance for critical equipment is current and logged'] },
             { id: '8.5.2', title: 'Identification and Traceability', isSub: true,
-              req: 'Maintain appropriate identification throughout provision.',
-              tags: ['Unique Identification Tagging', 'Specimen/Sample Labeling Logs', 'Chain of Custody Tracking Records', 'Barcode System Verification'],
-              phrasing: ['Identification and traceability are continuous, reliable, and verified', 'Traceability markers were found to be missing from several critical samples', 'The unique identification system is verified as highly effective for this unit', 'Traceability records maintain a high level of data integrity throughout the process'] },
+              req: 'Maintain appropriate identification.',
+              tags: ['[Clinical] Patient ID wristbands', '[Admin] Document Barcoding', 'Unique ID Logs', 'Chain of Custody records'],
+              phrasing: ['Patient identification and traceability are continuous and verified', 'Administrative file traceability maintained through unique barcoding/ID', 'Traceability markers found missing from several clinical specimens'] },
             { id: '8.6', title: 'Release of Products/Services',
               req: 'Complete arrangements satisfactorily before release.',
-              tags: ['Final Release Verification Checklist', 'Authorized Release Signatures', 'Acceptance Criteria Compliance Report'],
-              phrasing: ['Verification of final release criteria is confirmed prior to service delivery', 'Evidence of service release prior to the completion of final verification steps', 'Release of services is performed exclusively by authorized personnel', 'Final release records lack the required verification signatures and dates'] },
+              tags: ['[Clinical] Discharge Clearance', '[Admin] Final Billing QA', 'Authorized Sign-off', 'Criteria Compliance Report'],
+              phrasing: ['Verification of final release criteria confirmed prior to discharge/release', 'Evidence of service release prior to completion of final verification', 'Release of unit services performed exclusively by authorized personnel'] },
             { id: '8.7', title: 'Control of Non-conforming Outputs',
               req: 'Identify and control to prevent unintended use.',
-              tags: ['Non-conformance Registry (NCR)', 'Quarantine and Tagging Records', 'Disposition Authorization', 'Action Plan for Recovery'],
-              phrasing: ['Non-conforming outputs are clearly identified, segregated, and recorded', 'Absence of a formal mechanism for the control of non-conforming service outputs', 'The disposition of non-conforming items is thoroughly documented and authorized', 'Corrective actions for non-conformities are verified as being effectively managed'] },
+              tags: ['[Clinical] Adverse Event Registry', '[Admin] Billing Discrepancy Log', 'NCR Registry', 'Quarantine/Segregation'],
+              phrasing: ['Non-conforming outputs are clearly identified and segregated from use', 'Absence of formal mechanism for controlling non-conforming services', 'Disposition of non-conforming items is thoroughly documented'] },
 
             { id: '9.0', title: 'PERFORMANCE EVALUATION', isHeader: true },
             { id: '9.1.2', title: 'Customer satisfaction', isSub: true,
-              req: 'Monitor perceptions of degree of fulfilled needs/expectations.',
-              tags: ['Satisfaction Survey Analysis', 'Complaint Management System Log', 'Patient Feedback Analysis Reports', 'Service Improvement Minutes'],
-              phrasing: ['Client feedback and satisfaction monitoring systems are robust and active', 'Satisfaction monitoring efforts lack a statistically significant sample size', 'Analysis of customer feedback results in verifiable improvements to service delivery', 'Complaint resolution timelines are consistently adhered to by the unit'] },
+              req: 'Monitor perceptions of fulfilled needs.',
+              tags: ['[Clinical] Patient Experience Survey', '[Admin] Stakeholder Feedback', 'Complaint Logs', 'Satisfaction Analysis'],
+              phrasing: ['Patient experience and satisfaction monitoring systems are active', 'Satisfaction monitoring lacks statistically significant sample sizes', 'Complaint resolution timelines are consistently adhered to by the unit'] },
             { id: '9.2', title: 'Internal Audit', std: 'ISO 9001:2015',
-              req: 'Conducted at planned intervals; verify conformance and effectiveness.',
-              tags: ['Internal Audit Program/Schedule', 'Internal Audit Report (ID:)', 'Auditor Competency Evidence', 'Non-conformance Follow-up Logs'],
-              phrasing: ['The internal audit program is executed in accordance with the planned schedule', 'Audit findings are promptly reported to top management for review and action', 'Internal auditors demonstrate required competency and maintain objectivity', 'Status of corrective actions from previous audits is verified as current'] },
+              req: 'Conducted at planned intervals.',
+              tags: ['[Unit] Internal Audit Schedule', 'Audit Findings Summary', 'Auditor Competency', 'CAR Status Log'],
+              phrasing: ['Unit internal audit program executed per established schedule', 'Audit findings reported to management for timely review and action', 'Internal auditors demonstrate competency and maintain objectivity'] },
 
             { id: '10.0', title: 'IMPROVEMENT', isHeader: true },
             { id: '10.2', title: 'NC & Corrective Action', std: 'ISO 9001:2015',
-              req: 'Reaction to NC/complaints, evaluate root cause, review effectiveness.',
-              tags: ['Corrective Action Reports (CAR)', 'Root Cause Analysis (RCA) Documents', 'Effectiveness Verification Evidence', 'Complaint Resolution Logs'],
-              phrasing: ['Corrective actions effectively address the systemic root causes of issues', 'Recurrence of non-conformance was noted due to inadequate root cause analysis', 'The timeliness of corrective action implementation is satisfactory and logged', 'Verification of effectiveness is confirmed through rigorous objective evidence'] },
+              req: 'Reaction to NC/complaints, evaluate root cause.',
+              tags: ['[Clinical] Sentinel Event RCA', '[Admin] CAR Management Log', 'Effectiveness Evidence', 'Resolution Records'],
+              phrasing: ['Corrective actions effectively address systemic root causes of issues', 'Recurrence of NC noted due to inadequate root cause analysis (RCA)', 'Verification of effectiveness confirmed through rigorous objective evidence'] },
             { id: '10.3', title: 'Continual improvement',
-              req: 'Continually improve suitability, adequacy and effectiveness of QMS.',
-              tags: ['Continual Improvement Project Log', 'Efficiency Metric Trend Analysis', 'Unit Quality Improvement Minutes', 'Staff Innovation/Suggestion Records'],
-              phrasing: ['Objective evidence confirms a culture of ongoing process optimization', 'Evidence suggests a limited or reactive approach to continual improvement', 'The suitability of the QMS is enhanced through documented unit initiatives', 'Improvements are effectively tracked, analyzed, and reported to management'] }
+              req: 'Improve suitability, adequacy and effectiveness of QMS.',
+              tags: ['[Clinical] QI Project Logs', '[Admin] Efficiency Trend Reports', 'Innovation Suggestions', 'CI Meeting Minutes'],
+              phrasing: ['Objective evidence confirms a culture of ongoing clinical optimization', 'Suitability of unit QMS enhanced via documented departmental initiatives', 'Improvements effectively tracked, analyzed, and reported to management'] }
         ];
 
         const sessionStore = {};
@@ -274,10 +270,10 @@
         function init() {
             renderTable();
             setInterval(() => {
-                const teamLeaderVal = document.getElementById('teamLeader')?.value || '';
-                const auditeeVal = document.getElementById('auditee')?.value || '';
-                if(document.getElementById('printLeaderName')) document.getElementById('printLeaderName').innerText = teamLeaderVal;
-                if(document.getElementById('printAuditeeName')) document.getElementById('printAuditeeName').innerText = auditeeVal;
+                const tl = document.getElementById('teamLeader')?.value || '';
+                const au = document.getElementById('auditee')?.value || '';
+                if(document.getElementById('printLeaderName')) document.getElementById('printLeaderName').innerText = tl;
+                if(document.getElementById('printAuditeeName')) document.getElementById('printAuditeeName').innerText = au;
             }, 1000);
         }
 
@@ -321,8 +317,7 @@
 
         window.insertText = (targetId, text, id, field) => {
             const area = document.getElementById(targetId);
-            const bullet = "• ";
-            const prefix = area.value ? "\n" + bullet : bullet;
+            const prefix = area.value ? "\n• " : "• ";
             area.value += prefix + text;
             if (field === 'evidence') validateEv(id, area.value); else syncVal(id, field, area.value);
             area.focus();
@@ -378,21 +373,8 @@
             saveText.innerText = "Syncing...";
 
             const payload = {
-                meta: { 
-                    date: document.getElementById('auditDate').value, 
-                    no: document.getElementById('iqaNo').value, 
-                    dept: document.getElementById('department').value, 
-                    leader: document.getElementById('teamLeader').value, 
-                    auditee: document.getElementById('auditee').value, 
-                    summary: document.getElementById('overallSummary').value 
-                },
-                totals: { 
-                    C: document.getElementById('summary-c').innerText, 
-                    MJ: document.getElementById('summary-mj').innerText, 
-                    MN: document.getElementById('summary-mn').innerText, 
-                    O: document.getElementById('summary-o').innerText, 
-                    OFI: document.getElementById('summary-ofi').innerText 
-                },
+                meta: { date: document.getElementById('auditDate').value, no: document.getElementById('iqaNo').value, dept: document.getElementById('department').value, leader: document.getElementById('teamLeader').value, auditee: document.getElementById('auditee').value, summary: document.getElementById('overallSummary').value },
+                totals: { C: document.getElementById('summary-c').innerText, MJ: document.getElementById('summary-mj').innerText, MN: document.getElementById('summary-mn').innerText, O: document.getElementById('summary-o').innerText, OFI: document.getElementById('summary-ofi').innerText },
                 findings: sessionStore
             };
 
@@ -411,7 +393,7 @@
                   .processAuditData(payload);
             } else {
                 console.log("Payload:", payload);
-                alert("Running in preview mode - Integration requires Google Apps Script environment.");
+                alert("Running in preview mode - Check console for JSON payload. Integration requires Google Apps Script environment.");
                 btn.disabled = false;
                 saveText.innerText = originalText;
             }
