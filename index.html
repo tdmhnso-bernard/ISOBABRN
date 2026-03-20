@@ -17,9 +17,9 @@
             textarea { border: none !important; height: auto !important; overflow: visible !important; min-height: 20px !important; }
             .checkbox-cell { width: 30px !important; font-size: 12pt !important; text-align: center !important; font-weight: bold; }
             .guidance-box { display: none !important; }
-            .summary-print-section { display: block !important; page-break-before: auto; }
-            .requirement-text { background: transparent !important; border: none !important; padding: 0 !important; color: #333 !important; }
+            .requirement-text { background: transparent !important; border: none !important; padding: 0 !important; color: #333 !important; font-style: normal !important; }
             input[type="text"] { border: none !important; }
+            .clause-group { background-color: #f1f5f9 !important; -webkit-print-color-adjust: exact; }
         }
         
         .audit-table th, .audit-table td { border: 1.2px solid #000; }
@@ -40,9 +40,8 @@
 
         .sub-clause { padding-left: 1rem !important; }
         .clause-group { background-color: #f1f5f9; font-weight: bold; text-transform: uppercase; border-top: 2px solid black !important; }
-        .requirement-text { display: block; margin-top: 3px; color: #475569; font-weight: normal; font-size: 9px; line-height: 1.3; white-space: pre-wrap; font-style: italic; background: #f8fafc; padding: 4px; border-radius: 2px; border-left: 3px solid #cbd5e1; }
+        .requirement-text { display: block; margin-top: 3px; color: #2d3748; font-weight: normal; font-size: 9px; line-height: 1.3; white-space: pre-wrap; background: transparent; padding: 2px 0; }
         
-        /* TAG UI */
         .guidance-box { margin-top: 5px; padding: 5px; background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 4px; text-align: left; }
         .guidance-label { font-size: 8px; font-weight: 800; color: #1e3a8a; text-transform: uppercase; margin-bottom: 4px; display: block; }
         .tag { display: inline-block; font-size: 9px; background: #eff6ff; color: #1d4ed8; padding: 2px 6px; border-radius: 4px; margin: 2px; cursor: pointer; border: 1px solid #bfdbfe; font-weight: 600; }
@@ -50,7 +49,6 @@
         .tag-result { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
         .evidence-missing { border: 2px solid #f59e0b !important; background-color: #fffbeb !important; }
         
-        /* Sync Pulse Animation */
         .sync-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
     </style>
@@ -60,7 +58,7 @@
     <div id="app" class="max-w-[1700px] mx-auto bg-white shadow-xl overflow-hidden print-container">
         
         <!-- Navbar -->
-        <div class="bg-slate-800 text-white p-4 flex justify-between items-center no-print">
+        <div class="bg-slate-900 text-white p-4 flex justify-between items-center no-print sticky top-0 z-50">
             <div class="flex items-center gap-4">
                 <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center font-bold text-xs">IQA</div>
                 <div>
@@ -71,10 +69,18 @@
                     </div>
                 </div>
             </div>
-            <div class="flex gap-2">
-                <button onclick="window.print()" class="bg-slate-600 hover:bg-slate-500 px-4 py-2 rounded text-[10px] font-bold uppercase">Print Landscape</button>
-                <button onclick="saveToSheet()" id="saveBtn" class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded text-[10px] font-bold transition flex items-center gap-2 uppercase shadow-md">
-                    <span id="saveText">Force Sync Now</span>
+            <div class="flex gap-3">
+                <button onclick="window.print()" class="bg-indigo-600 hover:bg-indigo-500 px-6 py-2 rounded text-[10px] font-bold uppercase shadow-lg flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    View PDF / Print Checklist
+                </button>
+                <button onclick="saveToSheet()" id="saveBtn" class="bg-emerald-600 hover:bg-emerald-500 px-6 py-2 rounded text-[10px] font-bold transition flex items-center gap-2 uppercase shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    <span id="saveText">Sync to Cloud</span>
                 </button>
             </div>
         </div>
@@ -86,7 +92,7 @@
             <!-- Legend Table -->
             <div class="flex justify-center mb-6">
                 <table class="w-80 border-collapse border border-black text-[10px]">
-                    <tr class="bg-gray-50 font-bold"><td colspan="2" class="border border-black text-center p-1">LEGEND:</td></tr>
+                    <tr class="bg-gray-50 font-bold"><td colspan="2" class="border border-black text-center p-1 uppercase">Legend:</td></tr>
                     <tr><td class="border border-black text-center font-bold w-12 p-1">C</td><td class="border border-black p-1 uppercase">Conformance</td></tr>
                     <tr><td class="border border-black text-center font-bold p-1">NC</td><td class="border border-black p-1 uppercase">Nonconformance</td></tr>
                     <tr><td class="border border-black text-center font-bold p-1">O</td><td class="border border-black p-1 uppercase">Observation</td></tr>
@@ -97,20 +103,20 @@
             <!-- Meta Data Table -->
             <table class="w-full border-collapse border border-black text-[11px] mb-4">
                 <tr>
-                    <td class="border border-black p-2 font-bold w-[20%] uppercase">Date and Time of Audit:</td>
+                    <td class="border border-black p-2 font-bold w-[20%] uppercase bg-gray-50">Date and Time of Audit:</td>
                     <td class="border border-black p-0 w-[25%]"><input type="text" id="auditDate" class="p-2" placeholder="e.g. Oct 24, 2023 09:00 AM" oninput="triggerAutoSave()"></td>
-                    <td class="border border-black p-2 font-bold w-[15%] uppercase">IQA No.</td>
+                    <td class="border border-black p-2 font-bold w-[15%] uppercase bg-gray-50">IQA No.</td>
                     <td colspan="2" class="border border-black p-0"><input type="text" id="iqaNo" class="p-2 font-bold" value="26-01" oninput="triggerAutoSave()"></td>
                 </tr>
                 <tr>
-                    <td rowspan="2" class="border border-black p-2 font-bold uppercase">Team Leader: MC REYAN ANONUEVO RN MM</td>
-                    <td class="border border-black p-2 font-bold bg-slate-50 uppercase">Auditee:</td>
+                    <td rowspan="2" class="border border-black p-2 font-bold uppercase bg-gray-50">Team Leader: MC REYAN ANONUEVO RN MM</td>
+                    <td class="border border-black p-2 font-bold bg-gray-50 uppercase">Auditee:</td>
                     <td class="border border-black p-0"><input type="text" id="auditee" class="p-2" placeholder="Name of Auditee" oninput="triggerAutoSave()"></td>
-                    <td class="border border-black p-2 font-bold bg-slate-50 w-[10%] uppercase">Dept.</td>
+                    <td class="border border-black p-2 font-bold bg-gray-50 w-[10%] uppercase">Dept.</td>
                     <td class="border border-black p-0"><input type="text" id="department" class="p-2" placeholder="Department Name" oninput="triggerAutoSave()"></td>
                 </tr>
                 <tr>
-                    <td colspan="4" class="border border-black p-2 font-bold uppercase">Audit Team: BERNARD BERNABE, RN</td>
+                    <td colspan="4" class="border border-black p-2 font-bold uppercase bg-gray-50">Audit Team: BERNARD BERNABE, RN</td>
                 </tr>
             </table>
 
@@ -137,7 +143,6 @@
                         </tr>
                     </thead>
                     <tbody id="checklistBody">
-                        <!-- Content generated by JS -->
                     </tbody>
                 </table>
             </div>
@@ -177,6 +182,7 @@
 
     <script>
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx9EMRd93cqPZO-1WNeZphg3594UZLFEMQI4t-BK5ki2ulVMq_THHehEtivcksayphwyg/exec";
+        const SUBMISSION_ID = "IQA-" + Math.random().toString(36).substr(2, 9).toUpperCase();
 
         const ISO_DATA = [
             { id: '6.0', title: 'PLANNING', isHeader: true },
@@ -292,7 +298,7 @@
                 if (item.isHeader) {
                     tr.className = "clause-group";
                     tr.innerHTML = `
-                        <td class="border border-black p-2 text-center font-bold">SECTION</td>
+                        <td class="border border-black p-2 text-center font-bold bg-gray-50 uppercase">Section</td>
                         <td class="border border-black p-2" colspan="8">${item.title}</td>
                     `;
                 } else {
@@ -304,11 +310,11 @@
                             ${item.id} ${item.title}
                             <span class="requirement-text">${item.req || ''}</span>
                         </td>
-                        <td class="border border-black checkbox-cell" onclick="setFinding('${cleanId}', 'C', this)"></td>
-                        <td class="border border-black checkbox-cell" onclick="setFinding('${cleanId}', 'MJ', this)"></td>
-                        <td class="border border-black checkbox-cell" onclick="setFinding('${cleanId}', 'MN', this)"></td>
-                        <td class="border border-black checkbox-cell" onclick="setFinding('${cleanId}', 'O', this)"></td>
-                        <td class="border border-black checkbox-cell" onclick="setFinding('${cleanId}', 'OFI', this)"></td>
+                        <td class="border border-black checkbox-cell" id="c_${cleanId}" onclick="setFinding('${cleanId}', 'C', this)"></td>
+                        <td class="border border-black checkbox-cell" id="mj_${cleanId}" onclick="setFinding('${cleanId}', 'MJ', this)"></td>
+                        <td class="border border-black checkbox-cell" id="mn_${cleanId}" onclick="setFinding('${cleanId}', 'MN', this)"></td>
+                        <td class="border border-black checkbox-cell" id="o_${cleanId}" onclick="setFinding('${cleanId}', 'O', this)"></td>
+                        <td class="border border-black checkbox-cell" id="ofi_${cleanId}" onclick="setFinding('${cleanId}', 'OFI', this)"></td>
                         <td class="border border-black p-2 align-top relative">
                             <textarea id="ev_${cleanId}" oninput="validateEv('${cleanId}', this.value); triggerAutoSave()"></textarea>
                             <div class="guidance-box no-print">
@@ -333,26 +339,25 @@
             updateSyncStatus('pending');
             clearTimeout(autoSaveTimeout);
             autoSaveTimeout = setTimeout(() => {
-                saveToSheet(true); // silent sync
-            }, 3000); // Save 3 seconds after last input
+                saveToSheet(true); 
+            }, 3000); 
         };
 
-        function updateSyncStatus(state, msg = '') {
+        function updateSyncStatus(state) {
             const dot = document.getElementById('syncDot');
             const txt = document.getElementById('syncText');
-            
             if(state === 'pending') {
                 dot.className = "w-2 h-2 rounded-full bg-amber-500 sync-pulse";
                 txt.innerText = "Changes pending...";
             } else if (state === 'syncing') {
                 dot.className = "w-2 h-2 rounded-full bg-blue-500 sync-pulse";
-                txt.innerText = "Syncing live...";
+                txt.innerText = "Syncing detailed data...";
             } else if (state === 'success') {
                 dot.className = "w-2 h-2 rounded-full bg-emerald-500";
-                txt.innerText = "Synced at " + new Date().toLocaleTimeString();
+                txt.innerText = "Full Form Saved at " + new Date().toLocaleTimeString();
             } else if (state === 'error') {
                 dot.className = "w-2 h-2 rounded-full bg-red-500";
-                txt.innerText = "Sync Error - Check Connection";
+                txt.innerText = "Sync Error";
             }
         }
 
@@ -411,19 +416,10 @@
 
         window.syncVal = (id, field, val) => sessionStore[id][field] = val;
 
-        window.saveToSheet = async (isSilent = false) => {
-            const btn = document.getElementById('saveBtn');
-            const saveText = document.getElementById('saveText');
-            
-            if(!isSilent) {
-                btn.disabled = true;
-                saveText.innerText = "Syncing...";
-            }
-            
-            updateSyncStatus('syncing');
-
-            const payload = {
+        function createPayload() {
+            return {
                 meta: { 
+                    id: SUBMISSION_ID,
                     date: document.getElementById('auditDate').value, 
                     no: document.getElementById('iqaNo').value, 
                     dept: document.getElementById('department').value, 
@@ -440,6 +436,18 @@
                 },
                 findings: sessionStore
             };
+        }
+
+        window.saveToSheet = async (isSilent = false) => {
+            const btn = document.getElementById('saveBtn');
+            const saveText = document.getElementById('saveText');
+            if(!isSilent) {
+                btn.disabled = true;
+                saveText.innerText = "Syncing...";
+            }
+            updateSyncStatus('syncing');
+
+            const payload = createPayload();
 
             try {
                 await fetch(WEB_APP_URL, {
@@ -456,7 +464,7 @@
             } finally {
                 if(!isSilent) {
                     btn.disabled = false;
-                    saveText.innerText = "Force Sync Now";
+                    saveText.innerText = "Sync to Cloud";
                 }
             }
         };
